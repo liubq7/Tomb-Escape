@@ -2,6 +2,7 @@ package Panes;
 
 
 
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -30,5 +31,8 @@ public class HomePane extends BorderPane {
 		
 		newgameBtn = new Button("New Game");
 		this.setBottom(newgameBtn);
+		
+		this.setAlignment(homeTitle, Pos.CENTER);
+		this.setAlignment(newgameBtn, Pos.CENTER);
 	}
 }

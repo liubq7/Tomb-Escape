@@ -1,5 +1,6 @@
 package Panes;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -31,13 +32,17 @@ public class SettingPane extends VBox{
 		
 		
 		HBox iconBox = new HBox();
-		iconBox.setSpacing(20);
+		iconBox.setAlignment(Pos.CENTER);
+		iconBox.setSpacing(50);
 		Image[] imageRead = new Image[3];
 		characterIcon = new ImageView[3];
 		for (int i=0; i<imageRead.length; i++) {
-			imageRead[i] = new Image("file:images/character"+String.valueOf(i));
+			imageRead[i] = new Image("file:images/character"+String.valueOf(i)+".png");
 			characterIcon[i] = new ImageView(imageRead[i]);
+			characterIcon[i].setFitHeight(50);
+			characterIcon[i].setFitWidth(50);
 			iconBox.getChildren().add(characterIcon[i]);
+			
 		}
 		this.getChildren().add(iconBox);
 		
@@ -64,5 +69,7 @@ public class SettingPane extends VBox{
 		startBtn = new Button("Start");
 		this.getChildren().add(startBtn);
 		
+		this.setAlignment(Pos.CENTER);
+		this.setSpacing(10);
 	}
 }
