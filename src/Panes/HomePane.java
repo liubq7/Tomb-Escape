@@ -24,7 +24,7 @@ public class HomePane extends BorderPane {
 		this.setTop(homeTitle);
 		
 		
-		Image iconImage = new Image("file:images/tomb.jpg");
+		Image iconImage = new Image("file:images/graveyard.png");
 		gameLogo = new ImageView(iconImage);
 		this.setCenter(gameLogo);
 		

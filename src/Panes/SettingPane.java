@@ -48,7 +48,7 @@ public class SettingPane extends VBox{
 		
 		
 		propsHP = new Label("HP:");
-		propsPRO = new Label("PRO");
+		propsPRO = new Label("PRO:");
 		this.getChildren().add(propsHP);
 		this.getChildren().add(propsPRO);
 
