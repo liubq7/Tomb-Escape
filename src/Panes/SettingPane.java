@@ -32,10 +32,11 @@ public class SettingPane extends VBox{
 		
 		HBox iconBox = new HBox();
 		iconBox.setSpacing(20);
-		Image[] imageRead = new Image[3];		
+		Image[] imageRead = new Image[3];
+		characterIcon = new ImageView[3];
 		for (int i=0; i<imageRead.length; i++) {
 			imageRead[i] = new Image("file:images/character"+String.valueOf(i));
-			characterIcon[i].setImage(imageRead[i]);
+			characterIcon[i] = new ImageView(imageRead[i]);
 			iconBox.getChildren().add(characterIcon[i]);
 		}
 		this.getChildren().add(iconBox);

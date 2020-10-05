@@ -24,7 +24,7 @@ public class HomePane extends BorderPane {
 		
 		
 		Image iconImage = new Image("file:images/tomb.jpg");
-		gameLogo.setImage(iconImage);
+		gameLogo = new ImageView(iconImage);
 		this.setCenter(gameLogo);
 		
 		
