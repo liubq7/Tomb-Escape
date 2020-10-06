@@ -16,6 +16,9 @@ public class PaneTest extends Application {
 		root.setScene(homeScene);
 		root.setTitle("Tomb-Escape");
 		root.show();
+		homePane.newgameBtn.setOnMouseClicked(e->{
+			root.setScene(settingScene);
+		});
 	}
 	
 	public static void main(String[] args) {
