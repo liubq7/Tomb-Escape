@@ -37,7 +37,7 @@ public class SettingPane extends VBox{
 		Image[] imageRead = new Image[3];
 		characterIcon = new ImageView[3];
 		for (int i=0; i<imageRead.length; i++) {
-			imageRead[i] = new Image("file:images/character"+String.valueOf(i)+".png");
+			imageRead[i] = new Image("file:images/characterChoose/"+String.valueOf(i)+".png");
 			characterIcon[i] = new ImageView(imageRead[i]);
 			characterIcon[i].setFitHeight(50);
 			characterIcon[i].setFitWidth(50);

@@ -9,7 +9,7 @@ import java.util.LinkedList;
 public class MazeCreator {
     private int col;  // 列（长）x，需为奇数
     private int row;  // 行（宽）y，需为奇数
-    private Cell[][] maze;
+    public Cell[][] maze;
     private LinkedList<Cell> roadList;
     private LinkedList<Cell> availableList;
 
@@ -93,7 +93,7 @@ public class MazeCreator {
         availableList.remove(end);
     }
 
-    private void generateMaze() {
+    public void generateMaze() {
         initMaze();
         Cell start = randomStart();
         while (!availableList.isEmpty()) {

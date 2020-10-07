@@ -11,9 +11,11 @@ public class PaneTest extends Application {
 		// TODO Auto-generated method stub
 		HomePane homePane = new HomePane();
 		SettingPane settingPane = new SettingPane();
+		GamePane gamePane = new GamePane(31,21,600);
 		Scene homeScene = new Scene(homePane);
 		Scene settingScene = new Scene(settingPane);
-		root.setScene(homeScene);
+		Scene mazeScene = new Scene(gamePane);
+		root.setScene(settingScene);
 		root.setTitle("Tomb-Escape");
 		root.show();
 		homePane.newgameBtn.setOnMouseClicked(e->{
