@@ -15,7 +15,7 @@ public class PaneTest extends Application {
 		Scene homeScene = new Scene(homePane);
 		Scene settingScene = new Scene(settingPane);
 		Scene mazeScene = new Scene(gamePane);
-		root.setScene(settingScene);
+		root.setScene(mazeScene);
 		root.setTitle("Tomb-Escape");
 		root.show();
 		homePane.newgameBtn.setOnMouseClicked(e->{
