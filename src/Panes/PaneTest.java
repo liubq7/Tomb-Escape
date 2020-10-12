@@ -1,12 +1,7 @@
 package Panes;
 
 import javafx.application.Application;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 public class PaneTest extends Application {
@@ -17,7 +12,7 @@ public class PaneTest extends Application {
 		HomePane homePane = new HomePane();
 		SettingPane settingPane = new SettingPane();
 
-		GamePane gamePane = new GamePane(31,21,600, 0);
+		GamePane gamePane = new GamePane(35,21,0);
 		Scene homeScene = new Scene(homePane);
 
 		Scene settingScene = new Scene(settingPane);

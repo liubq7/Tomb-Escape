@@ -1,14 +1,11 @@
 package Panes;
 
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 
@@ -21,10 +18,10 @@ public class GamePane extends BorderPane{
 
 
 	
-	public GamePane(int x, int y, int paneHeight, int characterType) {
+	public GamePane(int x, int y, int characterType) {
 		topBar = new HBox();
 		btmBar = new HBox();
-		mazePane = new MazePane(x, y, paneHeight, characterType);
+		mazePane = new MazePane(x, y, characterType);
 		topBarLabel = new Label[4];
 		btmBarButton = new Button[5];
 		btmBarImg = new ImageView[5];
