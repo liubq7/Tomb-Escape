@@ -17,9 +17,9 @@ public class MazeCreator {
     private int bloodBagNum;
     private int cloakNum;
 
-    private ArrayList<Cell> shovelList;
-    private ArrayList<Cell> bloodBagList;
-    private ArrayList<Cell> cloakList;
+    public ArrayList<Cell> shovelList;
+    public ArrayList<Cell> bloodBagList;
+    public ArrayList<Cell> cloakList;
 
 
     public MazeCreator(int x, int y) {
