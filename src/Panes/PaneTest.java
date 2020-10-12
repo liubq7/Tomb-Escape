@@ -17,7 +17,7 @@ public class PaneTest extends Application {
 		HomePane homePane = new HomePane();
 		SettingPane settingPane = new SettingPane();
 
-		GamePane gamePane = new GamePane(31,21,600);
+		GamePane gamePane = new GamePane(31,21,600, 0);
 		Scene homeScene = new Scene(homePane);
 
 		Scene settingScene = new Scene(settingPane);

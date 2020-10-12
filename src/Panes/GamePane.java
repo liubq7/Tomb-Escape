@@ -21,10 +21,10 @@ public class GamePane extends BorderPane{
 
 
 	
-	public GamePane(int x, int y, int paneHeight) {
+	public GamePane(int x, int y, int paneHeight, int characterType) {
 		topBar = new HBox();
 		btmBar = new HBox();
-		mazePane = new MazePane(x,y,paneHeight);
+		mazePane = new MazePane(x, y, paneHeight, characterType);
 		topBarLabel = new Label[4];
 		btmBarButton = new Button[5];
 		btmBarImg = new ImageView[5];
