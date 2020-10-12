@@ -55,8 +55,6 @@ public class MazePane extends GridPane{
 		mazeCreator.generateMaze();
         for (int j = 0; j < rows; j++) {
             for (int i = 0; i < cols; i++) {
-//				mazeLayouts[i][j] = new MazeCell(mazeCreator.maze[i][j]);
-                mazeLayouts[i][j].setPrefSize(CELLSIZE, CELLSIZE);
             	System.out.print(mazeLayouts[i][j].status + " ");
                 mazeLayouts[i][j].setView();
 				this.add(mazeLayouts[i][j], i, j);
@@ -89,6 +87,7 @@ public class MazePane extends GridPane{
     }
 
 
+    // TODO: 走到有道具的地方label+1
     private void initListener(MazePane mazePane) {
         moveListener = new EventHandler<KeyEvent>() {
             @Override

@@ -10,15 +10,29 @@ public class MazeCreator {
     private int col;  // 列（长）x，需为奇数
     private int row;  // 行（宽）y，需为奇数
     public Cell[][] maze;
-    private LinkedList<Cell> roadList;
+    private LinkedList<Cell> recurseList;
     private LinkedList<Cell> availableList;
+
+    private int shovelNum;
+    private int bloodBagNum;
+    private int cloakNum;
+
+    private ArrayList<Cell> shovelList;
+    private ArrayList<Cell> bloodBagList;
+    private ArrayList<Cell> cloakList;
+
 
     public MazeCreator(int x, int y) {
         col = x;
         row = y;
         maze = new Cell[x][y];
-        roadList = new LinkedList<>();
+        recurseList = new LinkedList<>();
         availableList = new LinkedList<>();
+
+        shovelNum = 2;
+        bloodBagNum = 3;
+        cloakNum = 1;
+
     }
 
     // 生成0，1间隔的基础地图
@@ -40,7 +54,7 @@ public class MazeCreator {
     private Cell randomStart() {
         int i = 1 + 2 * (int) (Math.random() * (col-1) / 2);
         int j = 1 + 2 * (int) (Math.random() * (row-1) / 2);
-        roadList.add(maze[i][j]);
+        recurseList.add(maze[i][j]);
         availableList.remove(maze[i][j]);
         return maze[i][j];
     }
@@ -89,7 +103,7 @@ public class MazeCreator {
         int midX = (start.x + end.x) / 2;
         int midY = (start.y + end.y) / 2;
         maze[midX][midY].status = 1;
-        roadList.add(end);
+        recurseList.add(end);
         availableList.remove(end);
     }
 
@@ -100,10 +114,41 @@ public class MazeCreator {
             if (getEnd(start) != null) {
                 Cell end = getEnd(start);
                 generatePath(start, end);
-                start = roadList.getLast();
+                start = recurseList.getLast();
             } else {
-                roadList.removeLast();
-                start = roadList.getLast();
+                recurseList.removeLast();
+                start = recurseList.getLast();
+            }
+        }
+
+
+        shovelList = new ArrayList<>();
+        while (shovelList.size() < shovelNum) {
+            int i = (int) (Math.random() * (col));
+            int j = (int) (Math.random() * (row));
+            if (maze[i][j].status == 1 && maze[i][j].props == 0) {
+                maze[i][j].props = 1;
+                shovelList.add(maze[i][j]);
+            }
+        }
+
+        bloodBagList = new ArrayList<>();
+        while (bloodBagList.size() < bloodBagNum) {
+            int i = (int) (Math.random() * (col));
+            int j = (int) (Math.random() * (row));
+            if (maze[i][j].status == 1 && maze[i][j].props == 0) {
+                maze[i][j].props = 2;
+                bloodBagList.add(maze[i][j]);
+            }
+        }
+
+        cloakList = new ArrayList<>();
+        while (cloakList.size() < cloakNum) {
+            int i = (int) (Math.random() * (col));
+            int j = (int) (Math.random() * (row));
+            if (maze[i][j].status == 1 && maze[i][j].props == 0) {
+                maze[i][j].props = 3;
+                cloakList.add(maze[i][j]);
             }
         }
     }
