@@ -1,6 +1,5 @@
 package Panes;
 
-import Maze.Cell;
 import Maze.MazeCreator;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -12,7 +11,6 @@ import javafx.scene.layout.GridPane;
 public class MazePane extends GridPane{
     public static final int CELLSIZE = 28;
     MazeCreator mazeCreator;
-    Cell[][] mazeLayouts;
     Player player;
 	int rows,cols;	//行列数
 
@@ -27,7 +25,6 @@ public class MazePane extends GridPane{
 		rows = y;
 		cols = x;
 		mazeCreator = new MazeCreator(x,y);
-		mazeLayouts = mazeCreator.maze;
 		player = new Player(1,1, characterType);
 		initImg();
 		initMazeLayouts();
@@ -37,15 +34,45 @@ public class MazePane extends GridPane{
         this.setOnKeyPressed(moveListener);
 	}
 
-    private class Player {
+    public class Player {
         int x,y;	//保存坐标
         private int characterType;
-        int[] itemList;	//拥有道具数目，itemList[0]钥匙 itemList[1]铲子 itemList[2] 隐身衣
+        int[] itemList = {0, 0, 0, 2};	//拥有道具数目，itemList[0]钥匙 itemList[1]铲子 itemList[2]隐身衣 itemList[3]血值（初始为2）
 
         private Player(int x, int y, int characterType) {
             this.x = x;
             this.y = y;
             this.characterType = characterType;
+            switch (characterType) {
+                case 0:  // warrior
+                    itemList[1] += 1;  // 多一把铲子
+                    break;
+                case 1:  // priest
+                    itemList[2] += 1;  // 多一件隐身衣
+                    break;
+                case 2:  // defender
+                    itemList[3] += 1;  // 多一滴血
+                    break;
+            }
+        }
+
+        // 如果走到道具处则itemlist相应+1并return代号
+        public int getProp() {
+            if (mazeCreator.shovelList.contains(mazeCreator.maze[x][y])) {  // 铲子
+                itemList[1] += 1;
+                mazeCreator.shovelList.remove(mazeCreator.maze[x][y]);
+                return 1;
+            } else if (mazeCreator.bloodBagList.contains(mazeCreator.maze[x][y])) {  // 血包
+                itemList[3] += 1;
+                mazeCreator.bloodBagList.remove(mazeCreator.maze[x][y]);
+                return 2;
+            } else if (mazeCreator.cloakList.contains(mazeCreator.maze[x][y])) {  // 隐身
+                itemList[2] += 1;
+                mazeCreator.cloakList.remove(mazeCreator.maze[x][y]);
+                return 3;
+            } else {
+                return 0;
+            }
         }
     }
 
@@ -55,17 +82,17 @@ public class MazePane extends GridPane{
 		mazeCreator.generateMaze();
         for (int j = 0; j < rows; j++) {
             for (int i = 0; i < cols; i++) {
-            	System.out.print(mazeLayouts[i][j].status + " ");
-                mazeLayouts[i][j].setView();
-				this.add(mazeLayouts[i][j], i, j);
+            	System.out.print(mazeCreator.maze[i][j].status + " ");
+                mazeCreator.maze[i][j].setView();
+				this.add(mazeCreator.maze[i][j], i, j);
             }
             System.out.println();
         }
-        this.mazeLayouts[player.x][player.y].setCenter(characterIcon);
-        this.mazeLayouts[cols - 2][rows - 1].setCenter(doorView);
-	}
+        this.mazeCreator.maze[player.x][player.y].setCenter(characterIcon);
+        this.mazeCreator.maze[cols - 2][rows - 1].setCenter(doorView);
+    }
 
-	/* 根据不同的charactertype产生不同的icon */
+    /* 根据不同的charactertype产生不同的icon */
     private void initImg() {
         switch (player.characterType) {
             case 0:
@@ -87,7 +114,6 @@ public class MazePane extends GridPane{
     }
 
 
-    // TODO: 走到有道具的地方label+1
     private void initListener(MazePane mazePane) {
         moveListener = new EventHandler<KeyEvent>() {
             @Override
@@ -96,30 +122,30 @@ public class MazePane extends GridPane{
                 switch (keyEvent.getCode()) {
                     case S:
                         System.out.println("S");
-                        if (mazePane.mazeLayouts[player.x][player.y + 1].status != 0) {
+                        if (mazePane.mazeCreator.maze[player.x][player.y + 1].status != 0) {
                             player.y += 1;
-                            mazePane.mazeLayouts[player.x][player.y].setCenter(characterIcon);
+                            mazePane.mazeCreator.maze[player.x][player.y].setCenter(characterIcon);
                         }
                         break;
                     case W:
                         System.out.println("W");
-                        if (mazePane.mazeLayouts[player.x][player.y - 1].status != 0) {
+                        if (mazePane.mazeCreator.maze[player.x][player.y - 1].status != 0) {
                             player.y -= 1;
-                            mazePane.mazeLayouts[player.x][player.y].setCenter(characterIcon);
+                            mazePane.mazeCreator.maze[player.x][player.y].setCenter(characterIcon);
                         }
                         break;
                     case A:
                         System.out.println("A");
-                        if (mazePane.mazeLayouts[player.x - 1][player.y].status != 0) {
+                        if (mazePane.mazeCreator.maze[player.x - 1][player.y].status != 0) {
                             player.x -= 1;
-                            mazePane.mazeLayouts[player.x][player.y].setCenter(characterIcon);
+                            mazePane.mazeCreator.maze[player.x][player.y].setCenter(characterIcon);
                         }
                         break;
                     case D:
                         System.out.println("D");
-                        if (mazePane.mazeLayouts[player.x + 1][player.y].status != 0) {
+                        if (mazePane.mazeCreator.maze[player.x + 1][player.y].status != 0) {
                             player.x += 1;
-                            mazePane.mazeLayouts[player.x][player.y].setCenter(characterIcon);
+                            mazePane.mazeCreator.maze[player.x][player.y].setCenter(characterIcon);
                         }
                         break;
                 }
