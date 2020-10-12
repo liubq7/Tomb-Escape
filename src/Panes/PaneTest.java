@@ -10,15 +10,16 @@ public class PaneTest extends Application {
 	public void start(Stage root) {
 
 		HomePane homePane = new HomePane();
-		SettingPane settingPane = new SettingPane();
-
-		GamePane gamePane = new GamePane(35,21,2);
 		Scene homeScene = new Scene(homePane);
-
-		Scene settingScene = new Scene(settingPane);
+		
+		GamePane gamePane = new GamePane(35,21,2);
 		Scene mazeScene = new Scene(gamePane);
+		
+		SettingPane settingPane = new SettingPane(root,mazeScene);
+		Scene settingScene = new Scene(settingPane);
+		
 
-		root.setScene(mazeScene);
+		root.setScene(homeScene);
 		root.setTitle("Tomb-Escape");
 		root.show();
 		homePane.newgameBtn.setOnMouseClicked(e->{
