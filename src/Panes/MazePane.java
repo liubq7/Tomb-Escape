@@ -2,17 +2,25 @@ package Panes;
 
 import Maze.Cell;
 import Maze.MazeCreator;
+import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
 public class MazePane extends GridPane{
 	MazeCreator mazeCreator;
 	MazeCell[][] mazeLayouts;
-	CharacterCell player;
+    Player player;
 	int rows,cols;	//行列数
 	int cellSize;
+
+	private ImageView characterIcon;
+
+    private EventHandler<KeyEvent> moveListener;
+
 	
 	public MazePane(int x, int y, int PaneHeight) {
 		rows = y;
@@ -20,14 +28,19 @@ public class MazePane extends GridPane{
 		cellSize = PaneHeight/rows;
 		mazeCreator = new MazeCreator(x,y);
 		mazeLayouts = new MazeCell[x][y];
-		player = new CharacterCell(1,1, 0);
+		player = new Player(1,1, 0);
+		initImg();
 		initMazeLayouts();
 
+        this.setFocusTraversable(true);
+        initListener(this);
+        this.setOnKeyPressed(moveListener);
 	}
 
     private class MazeCell extends BorderPane{
         private Cell cell;
         private ImageView blockView;
+
         public MazeCell(Cell cell) {
             this.cell = cell;
             blockView = new ImageView(new Image("file:images/brick-wall.png"));
@@ -39,17 +52,15 @@ public class MazePane extends GridPane{
         }
     }
 
-    private class CharacterCell extends BorderPane{
+    private class Player {
         int x,y;	//保存坐标
+        private int characterType;
         int[] itemList;	//拥有道具数目，itemList[0]钥匙 itemList[1]铲子 itemList[2] 隐身衣
-        ImageView characterIcon;		//显示角色icon
-        public CharacterCell(int x, int y, int characterType) {
+
+        private Player(int x, int y, int characterType) {
             this.x = x;
             this.y = y;
-            characterIcon = new ImageView( new Image("file:images/characterPlay/"+String.valueOf(characterType)+".png"));
-            characterIcon.setFitHeight(cellSize);
-            characterIcon.setPreserveRatio(true);
-            this.setCenter(characterIcon);
+            this.characterType = characterType;
         }
     }
 
@@ -66,6 +77,46 @@ public class MazePane extends GridPane{
             }
             System.out.println();
         }
-        this.add(player, player.x,player.y );
+        this.mazeLayouts[player.x][player.y].setCenter(characterIcon);
 	}
+
+	private void initImg() {
+        characterIcon = new ImageView(new Image("file:images/characterPlay/0.png"));
+        characterIcon.setFitHeight(cellSize - 1);
+        characterIcon.setPreserveRatio(true);
+    }
+
+
+    private void initListener(MazePane mazePane) {
+        moveListener = new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                switch (keyEvent.getCode()) {
+                    case S:
+                        System.out.println("S");
+                        player.y += 1;
+                        mazePane.mazeLayouts[player.x][player.y].setCenter(characterIcon);
+                        break;
+                    case W:
+                        System.out.println("W");
+                        player.y -= 1;
+                        mazePane.mazeLayouts[player.x][player.y].setCenter(characterIcon);
+                        break;
+                    case A:
+                        System.out.println("A");
+                        player.x -= 1;
+                        mazePane.mazeLayouts[player.x][player.y].setCenter(characterIcon);
+                        break;
+                    case D:
+                        System.out.println("D");
+                        player.x += 1;
+                        mazePane.mazeLayouts[player.x][player.y].setCenter(characterIcon);
+                        break;
+                }
+
+            }
+        };
+    }
+
+
 }
