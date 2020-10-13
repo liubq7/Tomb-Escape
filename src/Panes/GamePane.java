@@ -109,6 +109,37 @@ public class GamePane extends BorderPane{
         keyboardListener = new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
+                // TODO: 不能走的地方给予声音提示？
+                switch (keyEvent.getCode()) {
+                    case S:
+                        System.out.println("S");
+                        if (mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y + 1].status != 0) {
+                            mazePane.player.y += 1;
+                            mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y].setCenter(mazePane.characterIcon);
+                        }
+                        break;
+                    case W:
+                        System.out.println("W");
+                        if (mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y - 1].status != 0) {
+                            mazePane.player.y -= 1;
+                            mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y].setCenter(mazePane.characterIcon);
+                        }
+                        break;
+                    case A:
+                        System.out.println("A");
+                        if (mazePane.mazeCreator.maze[mazePane.player.x - 1][mazePane.player.y].status != 0) {
+                            mazePane.player.x -= 1;
+                            mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y].setCenter(mazePane.characterIcon);
+                        }
+                        break;
+                    case D:
+                        System.out.println("D");
+                        if (mazePane.mazeCreator.maze[mazePane.player.x + 1][mazePane.player.y].status != 0) {
+                            mazePane.player.x += 1;
+                            mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y].setCenter(mazePane.characterIcon);
+                        }
+                        break;
+                }
                 int propType = mazePane.player.getProp();
                 switch (propType) {
                     case 1:
@@ -205,7 +236,6 @@ public class GamePane extends BorderPane{
                 if (!db.getString().equals("0") && target.status == 0) {
                     target.status = 1;
                     target.setCenter(null);
-                    //todo: DROP完不能走
 
                     success = true;
                 }
