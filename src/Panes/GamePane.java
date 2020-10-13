@@ -13,6 +13,7 @@ import javafx.scene.input.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import static Panes.MazePane.CELLSIZE;
 
@@ -161,6 +162,7 @@ public class GamePane extends BorderPane{
                     	TrapGamePane trapGamePane = new TrapGamePane();
             			Scene trapGameScene = new Scene(trapGamePane);
             			Stage trapGameStage = new Stage();
+            			trapGameStage.initStyle(StageStyle.UNDECORATED);
             			trapGameStage.setScene(trapGameScene);
             			trapGamePane.initTrapGame(trapGameStage, mazePane.player.itemList[3]);	//TODO: 血再gamePane上还是没有掉
                         break;
@@ -170,6 +172,7 @@ public class GamePane extends BorderPane{
                 	GhostGamePane ghostGamePane = new GhostGamePane();
         			Scene ghostGameScene = new Scene(ghostGamePane);
         			Stage ghostGameStage = new Stage();
+        			ghostGameStage.initStyle(StageStyle.UNDECORATED);
         			ghostGameStage.setScene(ghostGameScene);
         			ghostGamePane.initGhostGame(ghostGameStage, mazePane.player.itemList[0], true); //TODO: 钥匙在GamePane 上也没有更新，鬼图标消失但是还在那个位置
                 }else if((mazePane.player.x == mazePane.ghosts[1].x && mazePane.player.y == mazePane.ghosts[1].y) ||
@@ -178,6 +181,7 @@ public class GamePane extends BorderPane{
                 	GhostGamePane ghostGamePane = new GhostGamePane();
         			Scene ghostGameScene = new Scene(ghostGamePane);
         			Stage ghostGameStage = new Stage();
+        			ghostGameStage.initStyle(StageStyle.UNDECORATED);
         			ghostGameStage.setScene(ghostGameScene);
         			ghostGamePane.initGhostGame(ghostGameStage, mazePane.player.itemList[0], false);
                 }
