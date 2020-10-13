@@ -4,6 +4,7 @@ import Maze.Cell;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -11,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 
 import static Panes.MazePane.CELLSIZE;
 
@@ -150,6 +152,9 @@ public class GamePane extends BorderPane{
                         break;
                     case 3:
                         cloak.setText(Integer.toString(mazePane.player.itemList[2]));
+                        break;
+                    case 4:
+                        // todo: 触发trap。
                         break;
                 }
             }

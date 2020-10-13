@@ -25,7 +25,6 @@ public class MazePane extends GridPane{
     public ImageView characterIcon;
     private ImageView doorView;
 
-    private EventHandler<KeyEvent> moveListener;
 
 	
     public MazePane(int x, int y, int characterType, int blockType) {
@@ -35,6 +34,7 @@ public class MazePane extends GridPane{
 		mazeCreator = new MazeCreator(x,y);
 		mazeCreator.generateMaze();	//迷宫二维数组确定，不然没办法随机生成鬼的位置
 		player = new Player(1,1, characterType);
+
 		ghosts = new Ghost[3];
 		random = new Random();
 		for(int i=0; i<ghosts.length; i++) {
@@ -50,7 +50,7 @@ public class MazePane extends GridPane{
 		
 		initImg();
 		initMazeLayouts(blockType);
-		ghostsMove();	//不知道鬼怎么走
+		ghostsMove();	//todo：不知道鬼怎么走
 
         this.setFocusTraversable(true);
 	}
@@ -130,6 +130,9 @@ public class MazePane extends GridPane{
                 itemList[2] += 1;
                 mazeCreator.cloakList.remove(mazeCreator.maze[x][y]);
                 return 3;
+            } else if (mazeCreator.trapList.contains(mazeCreator.maze[x][y])) {
+                mazeCreator.trapList.remove(mazeCreator.maze[x][y]);
+                return 4;
             } else {
                 return 0;
             }
@@ -153,9 +156,11 @@ public class MazePane extends GridPane{
             }
             System.out.println();
         }
+
         for(int i=0; i<ghosts.length; i++) {
         	this.mazeCreator.maze[ghosts[i].x][ghosts[i].y].setCenter(ghosts[i].ghostView);
         }
+
         this.mazeCreator.maze[player.x][player.y].setCenter(characterIcon);
         this.mazeCreator.maze[cols - 2][rows - 1].setCenter(doorView);
     }
