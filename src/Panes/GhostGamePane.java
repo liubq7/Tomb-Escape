@@ -67,6 +67,7 @@ public class GhostGamePane extends BorderPane {
 		startBtn.setOnAction(e -> {
 			System.out.println("key owns:"+ itemKey);
 			btmBar.getChildren().remove(startBtn);
+			btmBar.getChildren().add(backBtn);
 			monsterImg.setDisable(false);
 			mTimer = new Timer();
 			mTimer.scheduleAtFixedRate(new TimerTask() {
@@ -103,7 +104,7 @@ public class GhostGamePane extends BorderPane {
 
 	private void initLayout() {
 		topBar.getChildren().addAll(gameTitle,timeTitle,clickTitle);
-		btmBar.getChildren().addAll(startBtn, backBtn);
+		btmBar.getChildren().addAll(startBtn);
 		this.setTop(topBar);
 		this.setCenter(monsterImg);
 		this.setBottom(btmBar);

@@ -56,13 +56,14 @@ public class TrapGamePane extends BorderPane{
     void initTrapGame(Stage trapGameStage,int bloodLeft) {
 		trapGameStage.show();
     	btmBar.setSpacing(20);
-		btmBar.getChildren().addAll(startBtn, backBtn);
+		btmBar.getChildren().addAll(startBtn);
 		btmBar.setAlignment(Pos.CENTER);
 		this.setBottom(btmBar);
 		startBtn.setOnMouseClicked(e->{
 			System.out.println("bloodLeft:"+ bloodLeft);
 			fireBullet(this,shield,bloodLeft);	//让子弹飞
 	    	btmBar.getChildren().remove(startBtn);	//只能按一次
+	    	btmBar.getChildren().add(backBtn);
 		});
 		backBtn.setOnMouseClicked(e->{
 
