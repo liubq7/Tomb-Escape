@@ -64,7 +64,6 @@ public class SettingPane extends VBox{
 	}
 
 	private void initLayout() {
-		// TODO Auto-generated method stub
 		for(int i=0; i<3; i++) {
 			characterBox.getChildren().add(characterBtn[i]);
 			tileBox.getChildren().add(tileBtn[i]);
@@ -107,7 +106,6 @@ public class SettingPane extends VBox{
 
 
 	private void initImgBtn() {
-		// TODO Auto-generated method stub
 		for(int i=0;i<3;i++) {
 			characterImg[i] = new ImageView(new Image("file:images/characterPlay/"+ String.valueOf(i)+".png"));
 			characterImg[i].setFitHeight(80);

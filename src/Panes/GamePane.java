@@ -208,7 +208,20 @@ public class GamePane extends BorderPane{
                 System.out.println("onDragEntered");
 
                 if (!event.getDragboard().getString().equals("0") && target.status == 0) {
-                    ImageView noBlockView = new ImageView(new Image("file:images/brick-wall-no.png"));
+                    ImageView noBlockView = new ImageView();
+                    switch (target.blockType) {
+                        case 0:
+                            noBlockView = new ImageView(new Image("file:images/tileChoose/no0.png"));
+                            break;
+                        case 1:
+                            noBlockView = new ImageView(new Image("file:images/tileChoose/no1.png"));
+                            target.setCenter(noBlockView);
+                            break;
+                        case 2:
+                            noBlockView = new ImageView(new Image("file:images/tileChoose/no2.png"));
+                            target.setCenter(noBlockView);
+                            break;
+                    }
                     noBlockView.setFitHeight(CELLSIZE);
                     noBlockView.setPreserveRatio(true);
                     target.setCenter(noBlockView);
@@ -224,10 +237,21 @@ public class GamePane extends BorderPane{
                 Cell target = (Cell) event.getSource();
 
                 if (!event.getDragboard().getString().equals("0") && target.status == 0) {
-                    ImageView blockView = new ImageView(new Image("file:images/brick-wall.png"));
-                    blockView.setFitHeight(CELLSIZE);
-                    blockView.setPreserveRatio(true);
-                    target.setCenter(blockView);
+                    ImageView BlockView = new ImageView();;
+                    switch (target.blockType) {
+                        case 0:
+                            BlockView = new ImageView(new Image("file:images/tileChoose/0.png"));
+                            break;
+                        case 1:
+                            BlockView = new ImageView(new Image("file:images/tileChoose/1.png"));
+                            break;
+                        case 2:
+                            BlockView = new ImageView(new Image("file:images/tileChoose/2.png"));
+                            break;
+                    }
+                    BlockView.setFitHeight(CELLSIZE);
+                    BlockView.setPreserveRatio(true);
+                    target.setCenter(BlockView);
                 }
 
                 event.consume();
