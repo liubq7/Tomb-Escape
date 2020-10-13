@@ -10,15 +10,9 @@ public class PaneTest extends Application {
 	public void start(Stage root) {
 
 		HomePane homePane = new HomePane();
-<<<<<<< HEAD
-=======
-		SettingPane settingPane = new SettingPane();
-
-		GamePane gamePane = new GamePane(35,21,0);
->>>>>>> branch 'master' of https://github.com/liubq7/Tomb-Escape
 		Scene homeScene = new Scene(homePane);
 		
-		GamePane gamePane = new GamePane(35,21,2);
+		GamePane gamePane = new GamePane(35,21,0);
 		Scene mazeScene = new Scene(gamePane);
 		
 		SettingPane settingPane = new SettingPane(root,mazeScene);
