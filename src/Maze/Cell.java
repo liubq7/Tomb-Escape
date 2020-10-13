@@ -12,6 +12,8 @@ public class Cell extends BorderPane {
     public int status;  // 0为墙，1为路
     public int props;	//这个地方是否有道具，0:没有，1:有铲子,2:血包,3:隐身衣, 4:trap
 
+    public int blockType;
+
     private ImageView blockView;
     private ImageView shovelView;
     private ImageView bloodBagView;
@@ -26,6 +28,7 @@ public class Cell extends BorderPane {
     }
 
     public void setView(int blockType) {
+        this.blockType = blockType;
     	
         blockView = new ImageView(new Image("file:images/tileChoose/"+ blockType+ ".png"));	//blockType值来自settingPane 的tileChoose
         blockView.setFitHeight(CELLSIZE);
