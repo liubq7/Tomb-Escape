@@ -32,9 +32,9 @@ public class GhostGamePane extends BorderPane {
 	int timeLeft = 5;
 	Timer mTimer;
 	/*
-	 * 传参传进来的stage 和 homeScene 是为了游戏结束返回， key是来自homePane 的参数
+	 * 
 	 */
-	public GhostGamePane(Stage stage,int key, Scene homeScene){
+	public GhostGamePane(){
 		this.setPrefSize(300, 300);
 		gameTitle = new Label("Try to click the Ghost as quick as possible!");
 		timeTitle = new Label("5s");
@@ -48,22 +48,24 @@ public class GhostGamePane extends BorderPane {
 		monsterImg.setPreserveRatio(true);
 		monsterImg.setDisable(true);
 		initLayout();
-		initGhostGame(stage, key, homeScene);
+		//initGhostGame(ghostGameStage, itemKey, hasKey);
 	}
 
-	private void initGhostGame(Stage stage, int key, Scene homeScene) {
+	public void initGhostGame(Stage ghostGameStage, int itemKey, boolean hasKey) {
 		
+		ghostGameStage.show();
 		monsterImg.setOnMouseClicked(e->{
 			count++;
 			clickTitle.setText("Click times:" + String.valueOf(count));
 		});
 		//点击返回按钮将会回到原来的界面
 		backBtn.setOnMouseClicked(e->{
-			EndGame(stage,key,homeScene);
+			EndGame(ghostGameStage, itemKey, hasKey);
 		});
 		
 		//按钮点击后中间的小鬼可以点击，并且计算点击次数
 		startBtn.setOnAction(e -> {
+			System.out.println("key owns:"+ itemKey);
 			btmBar.getChildren().remove(startBtn);
 			monsterImg.setDisable(false);
 			mTimer = new Timer();
@@ -87,16 +89,16 @@ public class GhostGamePane extends BorderPane {
 	}
 	
 	//打鬼游戏结束，回到原来的scene
-	private void EndGame(Stage stage, int key, Scene homeScene) {
+	public void EndGame(Stage ghostGameStage, int itemKey, boolean hasKey) {
 		//先判断游戏赢了还是输了
-		if(count>25) {
-			key = 1;
-			System.out.println("you win "+ key);
+		if(count>25 && hasKey) {
+			itemKey = 1;
+			System.out.println("you win, key owns:  "+ itemKey);
 		}else {
-			System.out.println("you lost "+ key);
-			key = 0;
+			System.out.println("you lost, key owns: "+ itemKey);
+			itemKey = 0;
 		}
-		stage.setScene(homeScene);
+		ghostGameStage.close();
 	}
 
 	private void initLayout() {

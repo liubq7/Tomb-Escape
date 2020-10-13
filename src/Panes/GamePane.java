@@ -16,6 +16,9 @@ import javafx.stage.Stage;
 
 import static Panes.MazePane.CELLSIZE;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class GamePane extends BorderPane{
 	HBox topBar,btmBar;	//上下分别用两个HBOX放组件
 	MazePane mazePane;	//中间是一个gridpane
@@ -154,13 +157,26 @@ public class GamePane extends BorderPane{
                         cloak.setText(Integer.toString(mazePane.player.itemList[2]));
                         break;
                     case 4:
-                        // todo: 触发trap。
+            			TrapGamePane trapGamePane = new TrapGamePane();
+            			Scene trapGameScene = new Scene(trapGamePane);
+            			Stage trapGameStage = new Stage();
+            			trapGameStage.setScene(trapGameScene);
+            			trapGamePane.initTrapGame(trapGameStage, mazePane.player.bloodLeft);
                         break;
                 }
-                if ((mazePane.player.x == mazePane.ghosts[0].x && mazePane.player.y == mazePane.ghosts[0].y) ||
-                        (mazePane.player.x == mazePane.ghosts[1].x && mazePane.player.y == mazePane.ghosts[1].y) ||
+                if ((mazePane.player.x == mazePane.ghosts[0].x && mazePane.player.y == mazePane.ghosts[0].y)){
+        			GhostGamePane ghostGamePane = new GhostGamePane();
+        			Scene ghostGameScene = new Scene(ghostGamePane);
+        			Stage ghostGameStage = new Stage();
+        			ghostGameStage.setScene(ghostGameScene);
+        			ghostGamePane.initGhostGame(ghostGameStage, mazePane.player.itemList[0], true);
+                }else if((mazePane.player.x == mazePane.ghosts[1].x && mazePane.player.y == mazePane.ghosts[1].y) ||
                         (mazePane.player.x == mazePane.ghosts[2].x && mazePane.player.y == mazePane.ghosts[2].y)) {
-                    // todo: 触发鬼机制
+        			GhostGamePane ghostGamePane = new GhostGamePane();
+        			Scene ghostGameScene = new Scene(ghostGamePane);
+        			Stage ghostGameStage = new Stage();
+        			ghostGameStage.setScene(ghostGameScene);
+        			ghostGamePane.initGhostGame(ghostGameStage, mazePane.player.itemList[0], false);
                 }
             }
         };
@@ -299,6 +315,21 @@ public class GamePane extends BorderPane{
 
         shovel.setOnDragDetected(dragDetector);
         shovel.setOnDragDone(dragDoneListener);
+        
+        //隐身衣的监听器
+        cloak.setOnMouseClicked(e->{
+        	mazePane.player.visible = false;
+        	Timer timer = new Timer();
+        	timer.schedule(new TimerTask() {
+				@Override
+				public void run() {
+					mazePane.player.visible = true;
+				}
+        		
+        	}, 5000);
+        	timer.cancel();
+        	timer.purge();
+        });
 
         for (int i = 0; i < mazePane.cols; i++) {
             for (int j = 0; j < mazePane.rows; j++) {

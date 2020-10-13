@@ -39,33 +39,35 @@ public class TrapGamePane extends BorderPane{
     ImageView character;
     Button startBtn,backBtn;
     HBox btmBar;
-	/*
-	 * 传参传进来的stage 和 homeScene 是为了游戏结束返回， result是来自homePane 的参数
-	 */
-    public TrapGamePane(Stage stage, Scene homeScene, int result) {
+
+    
+    public TrapGamePane() {
     	this.setPrefWidth(WIDTH);
     	this.setPrefHeight(HEIGHT);
     	character = new ImageView(new Image("file:images/ghost.png"));	//把人的icon放中间
     	startBtn = new Button("start");
     	backBtn = new Button("back");
     	btmBar = new HBox();
-    	initBtn(stage, homeScene, result);	//把按钮摆放好并且初始化监听器，按下开始按钮开始让子弹飞，返回按钮会返回上个scene
     	initCharacter();	//把character图像位置调整好
     	initShield();	//把盾初始化
     }
 
 
-    private void initBtn(Stage stage, Scene homeScene, int result) {
-		btmBar.setSpacing(20);
+    void initTrapGame(Stage trapGameStage,int bloodLeft) {
+		trapGameStage.show();
+    	btmBar.setSpacing(20);
 		btmBar.getChildren().addAll(startBtn, backBtn);
 		btmBar.setAlignment(Pos.CENTER);
 		this.setBottom(btmBar);
 		startBtn.setOnMouseClicked(e->{
-	    	fireBullet(this,shield,result);	//让子弹飞
+			System.out.println("bloodLeft:"+ bloodLeft);
+			fireBullet(this,shield,bloodLeft);	//让子弹飞
 	    	btmBar.getChildren().remove(startBtn);	//只能按一次
 		});
 		backBtn.setOnMouseClicked(e->{
-			stage.setScene(homeScene);	//回到迷宫界面
+
+			trapGameStage.close();	//回到迷宫界面
+			System.out.println("bloodLeft:"+ bloodLeft);
 		});
 	}
 
@@ -94,7 +96,7 @@ public class TrapGamePane extends BorderPane{
 	}
 
 
-	private void fireBullet(Pane pane, List<Arc> shield, int result) {
+	private void fireBullet(Pane pane, List<Arc> shield, int bloodLeft) {
 		
     	for(int i=0; i<NUM_BULLETS; i++) {
         	Circle bullet = new Circle(2, Color.BLACK);
@@ -127,13 +129,11 @@ public class TrapGamePane extends BorderPane{
             }); 
     		bulletAnimation.playFrom(Duration.seconds(RNG.nextInt(1)));;	//让子弹从某一任意时刻开始飞
     	}
-    	if(NUM_HITS >= NUM_BULLETS) {
-    		result = 1;	//如果接到的子弹数大于等于设定的，那么认为游戏赢了
+
+    	if(NUM_HITS < NUM_BULLETS) {
+    		bloodLeft --;	//如果接到的子弹数小于设置的子弹数，就会让血-1
     	}
-    	
 	}
-
-
 
 
 	private void setHoverListern(Arc arc) {
