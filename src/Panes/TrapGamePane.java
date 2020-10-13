@@ -131,7 +131,7 @@ public class TrapGamePane extends BorderPane{
     	}
 
     	if(NUM_HITS < NUM_BULLETS) {
-    		bloodLeft --;	//如果接到的子弹数小于设置的子弹数，就会让血-1
+    		bloodLeft--;	//如果接到的子弹数小于设置的子弹数，就会让血-1
     	}
 	}
 

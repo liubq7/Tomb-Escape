@@ -157,22 +157,25 @@ public class GamePane extends BorderPane{
                         cloak.setText(Integer.toString(mazePane.player.itemList[2]));
                         break;
                     case 4:
-            			TrapGamePane trapGamePane = new TrapGamePane();
+            			System.out.println("player's blood left:" + mazePane.player.itemList[3]);
+                    	TrapGamePane trapGamePane = new TrapGamePane();
             			Scene trapGameScene = new Scene(trapGamePane);
             			Stage trapGameStage = new Stage();
             			trapGameStage.setScene(trapGameScene);
-            			trapGamePane.initTrapGame(trapGameStage, mazePane.player.bloodLeft);
+            			trapGamePane.initTrapGame(trapGameStage, mazePane.player.itemList[3]);
                         break;
                 }
                 if ((mazePane.player.x == mazePane.ghosts[0].x && mazePane.player.y == mazePane.ghosts[0].y)){
-        			GhostGamePane ghostGamePane = new GhostGamePane();
+        			System.out.println("this ghost has key");
+                	GhostGamePane ghostGamePane = new GhostGamePane();
         			Scene ghostGameScene = new Scene(ghostGamePane);
         			Stage ghostGameStage = new Stage();
         			ghostGameStage.setScene(ghostGameScene);
         			ghostGamePane.initGhostGame(ghostGameStage, mazePane.player.itemList[0], true);
                 }else if((mazePane.player.x == mazePane.ghosts[1].x && mazePane.player.y == mazePane.ghosts[1].y) ||
                         (mazePane.player.x == mazePane.ghosts[2].x && mazePane.player.y == mazePane.ghosts[2].y)) {
-        			GhostGamePane ghostGamePane = new GhostGamePane();
+                	System.out.println("this ghost does not have key");
+                	GhostGamePane ghostGamePane = new GhostGamePane();
         			Scene ghostGameScene = new Scene(ghostGamePane);
         			Stage ghostGameStage = new Stage();
         			ghostGameStage.setScene(ghostGameScene);

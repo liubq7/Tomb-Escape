@@ -99,7 +99,6 @@ public class MazePane extends GridPane{
         private int characterType;
         int[] itemList = {0, 0, 0, 2};	//拥有道具数目，itemList[0]钥匙 itemList[1]铲子 itemList[2]隐身衣 itemList[3]血值（初始为2）
         boolean visible = true;		//使用隐身衣后，visible变为false, 将不会触发打鬼游戏
-        int bloodLeft;	//保存这个角色的剩余血量
 
         private Player(int x, int y, int characterType) {
             this.x = x;
@@ -108,15 +107,12 @@ public class MazePane extends GridPane{
             switch (characterType) {
                 case 0:  // warrior
                     itemList[1] += 1;  // 多一把铲子
-                    bloodLeft = 2;
                     break;
                 case 1:  // priest
                     itemList[2] += 1;  // 多一件隐身衣
-                    bloodLeft = 2;
                     break;
                 case 2:  // defender
                     itemList[3] += 1;  // 多一滴血
-                    bloodLeft = 3;
                     break;
             }
         }
@@ -130,7 +126,6 @@ public class MazePane extends GridPane{
             } else if (mazeCreator.bloodBagList.contains(mazeCreator.maze[x][y])) {  // 血包,捡到直接加血
                 itemList[3] += 1;
                 mazeCreator.bloodBagList.remove(mazeCreator.maze[x][y]);
-                bloodLeft++;
                 return 2;
             } else if (mazeCreator.cloakList.contains(mazeCreator.maze[x][y])) {  // 隐身
                 itemList[2] += 1;
