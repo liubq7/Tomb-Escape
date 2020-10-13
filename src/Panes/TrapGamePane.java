@@ -29,7 +29,7 @@ import javafx.scene.shape.Shape;
 public class TrapGamePane extends BorderPane{
     int WIDTH = 600 ;	//整个pane的长宽
     int HEIGHT = 600 ;
-    int NUM_BULLETS = 1 ;	//子弹数量
+    int NUM_BULLETS = 5 ;	//子弹数量
     int NUM_HITS = 0;	//被挡下来的次数
     int NUM_SHIELDS = 4;	//盾的数量
     int SHIELD_RADIUS = 60 ;	//盾的半径

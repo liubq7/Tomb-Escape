@@ -16,10 +16,12 @@ public class MazeCreator {
     private int shovelNum;
     private int bloodBagNum;
     private int cloakNum;
+    private int trapNum;
 
     public ArrayList<Cell> shovelList;
     public ArrayList<Cell> bloodBagList;
     public ArrayList<Cell> cloakList;
+    public ArrayList<Cell> trapList;
 
 
     public MazeCreator(int x, int y) {
@@ -32,6 +34,7 @@ public class MazeCreator {
         shovelNum = 2;
         bloodBagNum = 3;
         cloakNum = 1;
+        trapNum = 3;
 
     }
 
@@ -152,7 +155,16 @@ public class MazeCreator {
             }
         }
 
-        // todo: 生成陷阱
+
+        trapList = new ArrayList<>();
+        while (trapList.size() < trapNum) {
+            int i = (int) (Math.random() * (col));
+            int j = (int) (Math.random() * (row));
+            if (maze[i][j].status == 1 && maze[i][j].props == 0) {
+                maze[i][j].props = 4;
+                trapList.add(maze[i][j]);
+            }
+        }
     }
 
 

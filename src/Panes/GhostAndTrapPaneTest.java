@@ -17,7 +17,6 @@ public class GhostAndTrapPaneTest extends Application {
 	
 	@Override
 	public void start(Stage root) {
-		// TODO Auto-generated method stub
 		VBox home = new VBox();
 		Button startGhostGame = new Button("startGhostGame");
 		Button startTrapGame = new Button("startTrapGame");
