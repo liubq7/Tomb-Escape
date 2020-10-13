@@ -151,6 +151,8 @@ public class MazeCreator {
                 cloakList.add(maze[i][j]);
             }
         }
+
+        // todo: 生成陷阱
     }
 
 
