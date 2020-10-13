@@ -157,6 +157,11 @@ public class GamePane extends BorderPane{
                         // todo: 触发trap。
                         break;
                 }
+                if ((mazePane.player.x == mazePane.ghosts[0].x && mazePane.player.y == mazePane.ghosts[0].y) ||
+                        (mazePane.player.x == mazePane.ghosts[1].x && mazePane.player.y == mazePane.ghosts[1].y) ||
+                        (mazePane.player.x == mazePane.ghosts[2].x && mazePane.player.y == mazePane.ghosts[2].y)) {
+                    // todo: 触发鬼机制
+                }
             }
         };
 
