@@ -157,13 +157,26 @@ public class GamePane extends BorderPane{
                         cloak.setText(Integer.toString(mazePane.player.itemList[2]));
                         break;
                     case 4:
-                        // todo: 触发trap。
+            			TrapGamePane trapGamePane = new TrapGamePane();
+            			Scene trapGameScene = new Scene(trapGamePane);
+            			Stage trapGameStage = new Stage();
+            			trapGameStage.setScene(trapGameScene);
+            			trapGamePane.initTrapGame(trapGameStage, mazePane.player.bloodLeft);
                         break;
                 }
-                if ((mazePane.player.x == mazePane.ghosts[0].x && mazePane.player.y == mazePane.ghosts[0].y) ||
-                        (mazePane.player.x == mazePane.ghosts[1].x && mazePane.player.y == mazePane.ghosts[1].y) ||
+                if ((mazePane.player.x == mazePane.ghosts[0].x && mazePane.player.y == mazePane.ghosts[0].y)){
+        			GhostGamePane ghostGamePane = new GhostGamePane();
+        			Scene ghostGameScene = new Scene(ghostGamePane);
+        			Stage ghostGameStage = new Stage();
+        			ghostGameStage.setScene(ghostGameScene);
+        			ghostGamePane.initGhostGame(ghostGameStage, mazePane.player.itemList[0], true);
+                }else if((mazePane.player.x == mazePane.ghosts[1].x && mazePane.player.y == mazePane.ghosts[1].y) ||
                         (mazePane.player.x == mazePane.ghosts[2].x && mazePane.player.y == mazePane.ghosts[2].y)) {
-                    // todo: 触发鬼机制
+        			GhostGamePane ghostGamePane = new GhostGamePane();
+        			Scene ghostGameScene = new Scene(ghostGamePane);
+        			Stage ghostGameStage = new Stage();
+        			ghostGameStage.setScene(ghostGameScene);
+        			ghostGamePane.initGhostGame(ghostGameStage, mazePane.player.itemList[0], false);
                 }
             }
         };

@@ -65,6 +65,7 @@ public class GhostGamePane extends BorderPane {
 		
 		//按钮点击后中间的小鬼可以点击，并且计算点击次数
 		startBtn.setOnAction(e -> {
+			System.out.println("key owns:"+ itemKey);
 			btmBar.getChildren().remove(startBtn);
 			monsterImg.setDisable(false);
 			mTimer = new Timer();
@@ -92,9 +93,9 @@ public class GhostGamePane extends BorderPane {
 		//先判断游戏赢了还是输了
 		if(count>25 && hasKey) {
 			itemKey = 1;
-			System.out.println("you win "+ itemKey);
+			System.out.println("you win, key owns:  "+ itemKey);
 		}else {
-			System.out.println("you lost "+ itemKey);
+			System.out.println("you lost, key owns: "+ itemKey);
 			itemKey = 0;
 		}
 		ghostGameStage.close();

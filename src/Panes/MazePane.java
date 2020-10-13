@@ -46,7 +46,7 @@ public class MazePane extends GridPane{
 			}
 			ghosts[i] = new Ghost(ghostX,ghostY,false);
 		}
-		ghosts[random.nextInt(ghosts.length)].hasKey = true;	//随机某个鬼身上有钥匙
+		ghosts[0].hasKey = true;	//随机某个鬼身上有钥匙
 		
 		initImg();
 		initMazeLayouts(blockType);

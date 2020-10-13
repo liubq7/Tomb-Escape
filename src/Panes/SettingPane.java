@@ -27,8 +27,8 @@ public class SettingPane extends VBox{
 	Label settingTitle,characterTitle,hpTitle,proTitle,tileTitle;			
 	ImageView[] characterImg,tileImg;					
 	Button startBtn;			
-	String[] hpInfo = new String[] {"3 points","5 points","3points"};
-	String[] proInfo = new String[] {"1 spade","2 more blood points","1 invisible coak"};
+	String[] hpInfo = new String[] {"2 points","3 points","2 points"};
+	String[] proInfo = new String[] {"1 spade","1 more blood points","1 invisible coak"};
 	HBox characterBox,tileBox;
 	ToggleGroup characterGroup,tileGroup;	//单选按钮组
 	RadioButton[] characterBtn,tileBtn;		//单选按钮数组

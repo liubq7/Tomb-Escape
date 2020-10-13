@@ -39,9 +39,8 @@ public class TrapGamePane extends BorderPane{
     ImageView character;
     Button startBtn,backBtn;
     HBox btmBar;
-	/*
-	 * 传参传进来的stage 和 homeScene 是为了游戏结束返回， result是来自homePane 的参数
-	 */
+
+    
     public TrapGamePane() {
     	this.setPrefWidth(WIDTH);
     	this.setPrefHeight(HEIGHT);
@@ -49,7 +48,6 @@ public class TrapGamePane extends BorderPane{
     	startBtn = new Button("start");
     	backBtn = new Button("back");
     	btmBar = new HBox();
-    	//initBtn(trapGameStage, bloodLeft);	//把按钮摆放好并且初始化监听器，按下开始按钮开始让子弹飞，返回按钮会返回上个scene
     	initCharacter();	//把character图像位置调整好
     	initShield();	//把盾初始化
     }
@@ -62,12 +60,14 @@ public class TrapGamePane extends BorderPane{
 		btmBar.setAlignment(Pos.CENTER);
 		this.setBottom(btmBar);
 		startBtn.setOnMouseClicked(e->{
-	    	fireBullet(this,shield,bloodLeft);	//让子弹飞
+			System.out.println("bloodLeft:"+ bloodLeft);
+			fireBullet(this,shield,bloodLeft);	//让子弹飞
 	    	btmBar.getChildren().remove(startBtn);	//只能按一次
 		});
 		backBtn.setOnMouseClicked(e->{
+
 			trapGameStage.close();	//回到迷宫界面
-			System.out.println(bloodLeft);
+			System.out.println("bloodLeft:"+ bloodLeft);
 		});
 	}
 
@@ -129,10 +129,10 @@ public class TrapGamePane extends BorderPane{
             }); 
     		bulletAnimation.playFrom(Duration.seconds(RNG.nextInt(1)));;	//让子弹从某一任意时刻开始飞
     	}
+
     	if(NUM_HITS < NUM_BULLETS) {
     		bloodLeft --;	//如果接到的子弹数小于设置的子弹数，就会让血-1
     	}
-    	
 	}
 
 
