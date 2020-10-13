@@ -162,7 +162,7 @@ public class GamePane extends BorderPane{
             			Scene trapGameScene = new Scene(trapGamePane);
             			Stage trapGameStage = new Stage();
             			trapGameStage.setScene(trapGameScene);
-            			trapGamePane.initTrapGame(trapGameStage, mazePane.player.itemList[3]);
+            			trapGamePane.initTrapGame(trapGameStage, mazePane.player.itemList[3]);	//TODO: 血再gamePane上还是没有掉
                         break;
                 }
                 if ((mazePane.player.x == mazePane.ghosts[0].x && mazePane.player.y == mazePane.ghosts[0].y)){
@@ -171,7 +171,7 @@ public class GamePane extends BorderPane{
         			Scene ghostGameScene = new Scene(ghostGamePane);
         			Stage ghostGameStage = new Stage();
         			ghostGameStage.setScene(ghostGameScene);
-        			ghostGamePane.initGhostGame(ghostGameStage, mazePane.player.itemList[0], true);
+        			ghostGamePane.initGhostGame(ghostGameStage, mazePane.player.itemList[0], true); //TODO: 钥匙在GamePane 上也没有更新，鬼图标消失但是还在那个位置
                 }else if((mazePane.player.x == mazePane.ghosts[1].x && mazePane.player.y == mazePane.ghosts[1].y) ||
                         (mazePane.player.x == mazePane.ghosts[2].x && mazePane.player.y == mazePane.ghosts[2].y)) {
                 	System.out.println("this ghost does not have key");
