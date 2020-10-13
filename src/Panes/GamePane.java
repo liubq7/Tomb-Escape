@@ -29,10 +29,10 @@ public class GamePane extends BorderPane{
     private EventHandler<KeyEvent> keyboardListener;
 
 	
-	public GamePane(int x, int y, int characterType) {
+	public GamePane(int x, int y, int characterType, int blockType) {
 		topBar = new HBox();
 		btmBar = new HBox();
-		mazePane = new MazePane(x, y, characterType);
+		mazePane = new MazePane(x, y, characterType, blockType);
 		btmBarButton = new Button[5];
 		btmBarImg = new ImageView[5];
 

@@ -25,8 +25,9 @@ public class Cell extends BorderPane {
         this.setPrefSize(CELLSIZE, CELLSIZE);
     }
 
-    public void setView() {
-        blockView = new ImageView(new Image("file:images/brick-wall.png"));
+    public void setView(int blockType) {
+    	
+        blockView = new ImageView(new Image("file:images/tileChoose/"+ blockType+ ".png"));	//k值来自settingPane 的tileChoose
         blockView.setFitHeight(CELLSIZE);
         blockView.setPreserveRatio(true);
         if(status == 0) {

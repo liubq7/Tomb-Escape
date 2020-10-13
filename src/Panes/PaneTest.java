@@ -6,17 +6,19 @@ import javafx.stage.Stage;
 
 public class PaneTest extends Application {
 
+	HomePane homePane;
+	Scene homeScene;
+	SettingPane settingPane;
+	Scene settingScene;
+	
 	@Override
 	public void start(Stage root) {
 
-		HomePane homePane = new HomePane();
-		Scene homeScene = new Scene(homePane);
-		
-		GamePane gamePane = new GamePane(35,21,0);
-		Scene mazeScene = new Scene(gamePane);
-		
-		SettingPane settingPane = new SettingPane(root,mazeScene);
-		Scene settingScene = new Scene(settingPane);
+		homePane = new HomePane();
+		homeScene = new Scene(homePane);
+				
+		settingPane = new SettingPane(root);
+		settingScene = new Scene(settingPane);
 		
 
 		root.setScene(homeScene);

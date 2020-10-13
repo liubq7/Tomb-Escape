@@ -9,12 +9,19 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.InputEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+
+import java.awt.Event;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 
 public class SettingPane extends VBox{
 	Label settingTitle,characterTitle,hpTitle,proTitle,tileTitle;			
@@ -32,7 +39,7 @@ public class SettingPane extends VBox{
 	 * @param stage 用来切换场景和scene
 	 * @param scene
 	 */
-	public SettingPane(Stage stage, Scene scene) {
+	public SettingPane(Stage root) {
 		
 		
 		settingTitle = new Label("Settings");
@@ -52,7 +59,7 @@ public class SettingPane extends VBox{
 		startBtn = new Button("Start");
 		
 		initImgBtn();	//把每个单选按钮加到对应的Toggle Group 里并且加上图片
-		initListener(stage,scene);	//把每个单选按钮的事件注册
+		initListener(root);	//把每个单选按钮的事件注册
 		initLayout();	//把这个Pane的摆放规整
 	}
 
@@ -69,7 +76,7 @@ public class SettingPane extends VBox{
 		this.setSpacing(10);
 	}
 
-	private void initListener(Stage stage, Scene scene) {
+	private void initListener(Stage root) {
 		//如果那个单选按钮被选中，对应的characterPick, tilePick 就等于 0/1/2, 同时更新hp和pro栏的文字
 		characterGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
 		    public void changed(ObservableValue<? extends Toggle> ov,
@@ -91,10 +98,13 @@ public class SettingPane extends VBox{
 		        }
 		});
 		startBtn.setOnMouseClicked(e->{
-			stage.setScene(scene);
+			GamePane newGamePane = new GamePane(35,21,characterPick,tilePick);
+			Scene newGameScene = new Scene(newGamePane);
+			root.setScene(newGameScene);
 			System.out.println("character choose:" + characterPick + "tile choose:" + tilePick);
 		});
 	}
+
 
 	private void initImgBtn() {
 		// TODO Auto-generated method stub
