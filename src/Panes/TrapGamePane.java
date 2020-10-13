@@ -56,7 +56,6 @@ public class TrapGamePane extends BorderPane{
 
 
     private void initBtn(Stage stage, Scene homeScene, int result) {
-		// TODO Auto-generated method stub
 		btmBar.setSpacing(20);
 		btmBar.getChildren().addAll(startBtn, backBtn);
 		btmBar.setAlignment(Pos.CENTER);
@@ -72,7 +71,6 @@ public class TrapGamePane extends BorderPane{
 
 
 	private void initCharacter() {
-		// TODO Auto-generated method stub
     	character.setFitWidth(40);
     	character.setPreserveRatio(true);
     	character.setLayoutX(WIDTH/2 - 20);
@@ -84,7 +82,6 @@ public class TrapGamePane extends BorderPane{
 
 
 	private void initShield() {
-		// TODO Auto-generated method stub
     	for(int i=0; i< NUM_SHIELDS;i++) {
     		Arc aShield = new Arc( WIDTH/2,HEIGHT/2,SHIELD_RADIUS,SHIELD_RADIUS,90*i,90);
             aShield.setType(ArcType.OPEN);
@@ -98,7 +95,6 @@ public class TrapGamePane extends BorderPane{
 
 
 	private void fireBullet(Pane pane, List<Arc> shield, int result) {
-		// TODO Auto-generated method stub
 		
     	for(int i=0; i<NUM_BULLETS; i++) {
         	Circle bullet = new Circle(2, Color.BLACK);
@@ -141,7 +137,6 @@ public class TrapGamePane extends BorderPane{
 
 
 	private void setHoverListern(Arc arc) {
-		// TODO Auto-generated method stub
 		arc.setOnMouseEntered(e->{
 			arc.setStroke(Color.GREEN);
 		});

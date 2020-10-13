@@ -70,7 +70,6 @@ public class GhostGamePane extends BorderPane {
 			mTimer.scheduleAtFixedRate(new TimerTask() {
 				@Override
 				public void run() {
-					// TODO Auto-generated method stub
 					timeLeft--;
 					if(timeLeft<0) {
 						monsterImg.setDisable(true);
@@ -89,7 +88,6 @@ public class GhostGamePane extends BorderPane {
 	
 	//打鬼游戏结束，回到原来的scene
 	private void EndGame(Stage stage, int key, Scene homeScene) {
-		// TODO Auto-generated method stub
 		//先判断游戏赢了还是输了
 		if(count>25) {
 			key = 1;
@@ -102,7 +100,6 @@ public class GhostGamePane extends BorderPane {
 	}
 
 	private void initLayout() {
-		// TODO Auto-generated method stub
 		topBar.getChildren().addAll(gameTitle,timeTitle,clickTitle);
 		btmBar.getChildren().addAll(startBtn, backBtn);
 		this.setTop(topBar);

@@ -30,7 +30,7 @@ public class MazePane extends GridPane{
 		initMazeLayouts();
 
         this.setFocusTraversable(true);
-        initListener(this);
+        initListener();
         this.setOnKeyPressed(moveListener);
 	}
 
@@ -45,7 +45,7 @@ public class MazePane extends GridPane{
             this.characterType = characterType;
             switch (characterType) {
                 case 0:  // warrior
-                    itemList[1] += 1;  // 多一把铲子
+                    itemList[1] += 10;  // 多一把铲子  // TODO:1
                     break;
                 case 1:  // priest
                     itemList[2] += 1;  // 多一件隐身衣
@@ -114,7 +114,7 @@ public class MazePane extends GridPane{
     }
 
 
-    private void initListener(MazePane mazePane) {
+    private void initListener() {
         moveListener = new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
@@ -122,30 +122,30 @@ public class MazePane extends GridPane{
                 switch (keyEvent.getCode()) {
                     case S:
                         System.out.println("S");
-                        if (mazePane.mazeCreator.maze[player.x][player.y + 1].status != 0) {
+                        if (mazeCreator.maze[player.x][player.y + 1].status != 0) {
                             player.y += 1;
-                            mazePane.mazeCreator.maze[player.x][player.y].setCenter(characterIcon);
+                            mazeCreator.maze[player.x][player.y].setCenter(characterIcon);
                         }
                         break;
                     case W:
                         System.out.println("W");
-                        if (mazePane.mazeCreator.maze[player.x][player.y - 1].status != 0) {
+                        if (mazeCreator.maze[player.x][player.y - 1].status != 0) {
                             player.y -= 1;
-                            mazePane.mazeCreator.maze[player.x][player.y].setCenter(characterIcon);
+                            mazeCreator.maze[player.x][player.y].setCenter(characterIcon);
                         }
                         break;
                     case A:
                         System.out.println("A");
-                        if (mazePane.mazeCreator.maze[player.x - 1][player.y].status != 0) {
+                        if (mazeCreator.maze[player.x - 1][player.y].status != 0) {
                             player.x -= 1;
-                            mazePane.mazeCreator.maze[player.x][player.y].setCenter(characterIcon);
+                            mazeCreator.maze[player.x][player.y].setCenter(characterIcon);
                         }
                         break;
                     case D:
                         System.out.println("D");
-                        if (mazePane.mazeCreator.maze[player.x + 1][player.y].status != 0) {
+                        if (mazeCreator.maze[player.x + 1][player.y].status != 0) {
                             player.x += 1;
-                            mazePane.mazeCreator.maze[player.x][player.y].setCenter(characterIcon);
+                            mazeCreator.maze[player.x][player.y].setCenter(characterIcon);
                         }
                         break;
                 }
