@@ -1,6 +1,11 @@
 package Panes;
 
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import Maze.MazeCreator;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
@@ -12,7 +17,10 @@ public class MazePane extends GridPane{
     public static final int CELLSIZE = 28;
     MazeCreator mazeCreator;
     Player player;
+    Ghost[] ghosts;
+    Random random;
 	int rows,cols;	//行列数
+	int startPositionX,startPositionY;
 
     private ImageView characterIcon;
     private ImageView doorView;
@@ -25,15 +33,69 @@ public class MazePane extends GridPane{
 		rows = y;
 		cols = x;
 		mazeCreator = new MazeCreator(x,y);
+		mazeCreator.generateMaze();	//迷宫二维数组确定，不然没办法随机生成鬼的位置
 		player = new Player(1,1, characterType);
+		ghosts = new Ghost[3];
+		random = new Random();
+		for(int i=0; i<ghosts.length; i++) {
+			int ghostX = random.nextInt(cols);
+			int ghostY = random.nextInt(rows);
+			while(mazeCreator.maze[ghostX][ghostY].status != 1) {
+				ghostX = random.nextInt(cols);
+				ghostY = random.nextInt(rows);
+			}
+			ghosts[i] = new Ghost(ghostX,ghostY,0);
+		}
+		ghosts[random.nextInt(ghosts.length)].hasKey = 1;	//随机某个鬼身上有钥匙
+		
 		initImg();
 		initMazeLayouts(blockType);
+		ghostsMove();	//不知道鬼怎么走
 
         this.setFocusTraversable(true);
         initListener(this);
         this.setOnKeyPressed(moveListener);
 	}
 
+    private void ghostsMove() {
+		// TODO Auto-generated method stub
+		//int direction = 1;	//direction 表示鬼的移动方向，1表示坐，-1表示右
+		/*for(int i=0; i<ghosts.length; i++) {
+			startPositionX = ghosts[i].x;
+			startPositionY = ghosts[i].y;
+			ImageView thisView = ghosts[i].ghostView;
+			Timer timer = new Timer();
+			//当一直可以往坐走的时候
+				timer.scheduleAtFixedRate(new TimerTask() {
+					@Override
+					public void run() {
+						while((mazeCreator.maze[startPositionX-1][startPositionY]).status == 1) {
+							int nowPositionX = startPositionX--;
+							int nowPositionY = startPositionY;
+							mazeCreator.maze[nowPositionX][nowPositionY].setCenter(thisView);
+						}
+						while((mazeCreator.maze[startPositionX+1][startPositionY]).status == 1) {
+							int nowPositionX = startPositionX++;
+							int nowPositionY = startPositionY;
+							mazeCreator.maze[nowPositionX][nowPositionY].setCenter(thisView);
+						}
+					}
+				}, 0, 1000);
+			}*/
+	}
+
+	public class Ghost{
+    	int x,y;	//保存坐标
+    	int hasKey;	//0代表没有钥匙，1代表有钥匙
+    	ImageView ghostView;
+    	
+    	public Ghost(int x, int y, int hasKey) {
+    		this.hasKey = hasKey;
+    		this.x = x;
+    		this.y = y;	
+    	}
+
+    }
     public class Player {
         int x,y;	//保存坐标
         private int characterType;
@@ -74,12 +136,17 @@ public class MazePane extends GridPane{
                 return 0;
             }
         }
+        
+        //如果走到鬼那个地方，就触发打鬼游戏，打完再回到原来的游戏场景
+        public void fightGhost() {
+        	
+        }
     }
 
     private void initMazeLayouts(int blockType) {
         this.setVgap(2);
         this.setHgap(2);
-		mazeCreator.generateMaze();
+		//mazeCreator.generateMaze(); //我在实例化的时候调用了，不然没办法随机生成鬼的位置
         for (int j = 0; j < rows; j++) {
             for (int i = 0; i < cols; i++) {
             	System.out.print(mazeCreator.maze[i][j].status + " ");
@@ -87,6 +154,9 @@ public class MazePane extends GridPane{
 				this.add(mazeCreator.maze[i][j], i, j);
             }
             System.out.println();
+        }
+        for(int i=0; i<ghosts.length; i++) {
+        	this.mazeCreator.maze[ghosts[i].x][ghosts[i].y].setCenter(ghosts[i].ghostView);
         }
         this.mazeCreator.maze[player.x][player.y].setCenter(characterIcon);
         this.mazeCreator.maze[cols - 2][rows - 1].setCenter(doorView);
@@ -111,6 +181,12 @@ public class MazePane extends GridPane{
         doorView = new ImageView(new Image("file:images/door.png"));
         doorView.setFitHeight(CELLSIZE - 1);
         doorView.setPreserveRatio(true);
+        
+        for(int i=0; i<ghosts.length; i++) {
+        	ghosts[i].ghostView = new ImageView(new Image("file:images/ghost.png"));
+        	ghosts[i].ghostView.setFitHeight(CELLSIZE - 1);
+        	ghosts[i].ghostView.setPreserveRatio(true);
+        }
     }
 
 
