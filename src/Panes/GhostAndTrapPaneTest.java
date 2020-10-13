@@ -12,7 +12,8 @@ import javafx.stage.Stage;
 
 public class GhostAndTrapPaneTest extends Application {
 	int key = 0;
-	int result = 0;
+	int bloodLeft = 2;
+	boolean hasKey = true;
 	
 	@Override
 	public void start(Stage root) {
@@ -25,14 +26,18 @@ public class GhostAndTrapPaneTest extends Application {
 		root.setScene(homeScene);
 		root.show();
 		startGhostGame.setOnMouseClicked(e->{
-			GhostGamePane ghostGamePane = new GhostGamePane(root,key,homeScene);
+			GhostGamePane ghostGamePane = new GhostGamePane();
 			Scene ghostGameScene = new Scene(ghostGamePane);
-			root.setScene(ghostGameScene);
+			Stage ghostGameStage = new Stage();
+			ghostGameStage.setScene(ghostGameScene);
+			ghostGamePane.initGhostGame(ghostGameStage, key, hasKey);
 		});
 		startTrapGame.setOnMouseClicked(e->{
-			TrapGamePane trapGamePane = new TrapGamePane(root,homeScene,result);
+			TrapGamePane trapGamePane = new TrapGamePane();
 			Scene trapGameScene = new Scene(trapGamePane);
-			root.setScene(trapGameScene);
+			Stage trapGameStage = new Stage();
+			trapGameStage.setScene(trapGameScene);
+			trapGamePane.initTrapGame(trapGameStage, bloodLeft);
 		});
 		
 	}

@@ -14,6 +14,9 @@ import javafx.scene.layout.HBox;
 
 import static Panes.MazePane.CELLSIZE;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class GamePane extends BorderPane{
 	HBox topBar,btmBar;	//上下分别用两个HBOX放组件
 	MazePane mazePane;	//中间是一个gridpane
@@ -265,6 +268,21 @@ public class GamePane extends BorderPane{
 
         shovel.setOnDragDetected(dragDetector);
         shovel.setOnDragDone(dragDoneListener);
+        
+        //隐身衣的监听器
+        cloak.setOnMouseClicked(e->{
+        	mazePane.player.visible = false;
+        	Timer timer = new Timer();
+        	timer.schedule(new TimerTask() {
+				@Override
+				public void run() {
+					mazePane.player.visible = true;
+				}
+        		
+        	}, 5000);
+        	timer.cancel();
+        	timer.purge();
+        });
 
         for (int i = 0; i < mazePane.cols; i++) {
             for (int j = 0; j < mazePane.rows; j++) {
