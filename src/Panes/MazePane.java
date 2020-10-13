@@ -20,14 +20,14 @@ public class MazePane extends GridPane{
     private EventHandler<KeyEvent> moveListener;
 
 	
-    public MazePane(int x, int y, int characterType) {
+    public MazePane(int x, int y, int characterType, int blockType) {
 //        this.setPadding(new Insets(0, 10, 0, 10));
 		rows = y;
 		cols = x;
 		mazeCreator = new MazeCreator(x,y);
 		player = new Player(1,1, characterType);
 		initImg();
-		initMazeLayouts();
+		initMazeLayouts(blockType);
 
         this.setFocusTraversable(true);
 	}
@@ -74,14 +74,14 @@ public class MazePane extends GridPane{
         }
     }
 
-    private void initMazeLayouts() {
+    private void initMazeLayouts(int blockType) {
         this.setVgap(2);
         this.setHgap(2);
 		mazeCreator.generateMaze();
         for (int j = 0; j < rows; j++) {
             for (int i = 0; i < cols; i++) {
             	System.out.print(mazeCreator.maze[i][j].status + " ");
-                mazeCreator.maze[i][j].setView();
+                mazeCreator.maze[i][j].setView(blockType);
 				this.add(mazeCreator.maze[i][j], i, j);
             }
             System.out.println();

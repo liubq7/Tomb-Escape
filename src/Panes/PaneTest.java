@@ -6,19 +6,22 @@ import javafx.stage.Stage;
 
 public class PaneTest extends Application {
 
+	HomePane homePane;
+	Scene homeScene;
+	SettingPane settingPane;
+	Scene settingScene;
+	
 	@Override
 	public void start(Stage root) {
 
-		HomePane homePane = new HomePane();
-		SettingPane settingPane = new SettingPane();
+		homePane = new HomePane();
+		homeScene = new Scene(homePane);
+				
+		settingPane = new SettingPane(root);
+		settingScene = new Scene(settingPane);
+		
 
-		GamePane gamePane = new GamePane(35,21,0);
-		Scene homeScene = new Scene(homePane);
-
-		Scene settingScene = new Scene(settingPane);
-		Scene mazeScene = new Scene(gamePane);
-
-		root.setScene(mazeScene);
+		root.setScene(homeScene);
 		root.setTitle("Tomb-Escape");
 		root.show();
 		homePane.newgameBtn.setOnMouseClicked(e->{
