@@ -1,6 +1,8 @@
 package Panes;
 
 import Maze.Cell;
+import javafx.animation.FadeTransition;
+import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -13,6 +15,8 @@ import javafx.scene.input.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 import static Panes.MazePane.CELLSIZE;
 
@@ -157,12 +161,14 @@ public class GamePane extends BorderPane{
                         cloak.setText(Integer.toString(mazePane.player.itemList[2]));
                         break;
                     case 4:
-            			System.out.println("player's blood left:" + mazePane.player.itemList[3]);
-                    	TrapGamePane trapGamePane = new TrapGamePane();
-            			Scene trapGameScene = new Scene(trapGamePane);
-            			Stage trapGameStage = new Stage();
-            			trapGameStage.setScene(trapGameScene);
-            			trapGamePane.initTrapGame(trapGameStage, mazePane.player.itemList[3]);	//TODO: 血再gamePane上还是没有掉
+                        System.out.println("player's blood left:" + mazePane.player.itemList[3]);
+                        TrapGamePane trapGamePane = new TrapGamePane();
+                        Scene trapGameScene = new Scene(trapGamePane);
+                        Stage trapGameStage = new Stage();
+                        trapGameStage.setTitle("Trap Game");
+                        trapGameStage.initStyle(StageStyle.UNDECORATED);
+                        trapGameStage.setScene(trapGameScene);
+                        trapGamePane.initTrapGame(trapGameStage, blood, mazePane.player.itemList);
                         break;
                 }
                 if (mazePane.getGhost(mazePane.player.x, mazePane.player.y) != null) {
@@ -170,14 +176,16 @@ public class GamePane extends BorderPane{
                     GhostGamePane ghostGamePane = new GhostGamePane();
                     Scene ghostGameScene = new Scene(ghostGamePane);
                     Stage ghostGameStage = new Stage();
+                    ghostGameStage.setTitle("Ghost Game");
+                    ghostGameStage.initStyle(StageStyle.UNDECORATED);
                     ghostGameStage.setScene(ghostGameScene);
                     MazePane.Ghost ghost = mazePane.getGhost(mazePane.player.x, mazePane.player.y);
                     if (ghost.equals(mazePane.ghosts[0])) {
                         System.out.println("this ghost has key");
-                        ghostGamePane.initGhostGame(ghostGameStage, mazePane.player.itemList[0], true);
+                        ghostGamePane.initGhostGame(ghostGameStage, key, mazePane.player.itemList, true);
                     } else {
                         System.out.println("this ghost does not have key");
-                        ghostGamePane.initGhostGame(ghostGameStage, mazePane.player.itemList[0], false);
+                        ghostGamePane.initGhostGame(ghostGameStage, key, mazePane.player.itemList, false);
                     }
                     ghost.x = 0;
                     ghost.y = 0;
@@ -331,6 +339,12 @@ public class GamePane extends BorderPane{
 				}
         		
         	}, 5000);
+            FadeTransition ft = new FadeTransition(Duration.seconds(1), mazePane.characterIcon);
+            ft.setFromValue(0.1);
+            ft.setToValue(1.0);
+            ft.setCycleCount(5);
+            ft.setAutoReverse(true);
+            ft.play();
         	timer.cancel();
         	timer.purge();
         });

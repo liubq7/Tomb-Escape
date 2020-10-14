@@ -51,7 +51,7 @@ public class GhostGamePane extends BorderPane {
 		//initGhostGame(ghostGameStage, itemKey, hasKey);
 	}
 
-	public void initGhostGame(Stage ghostGameStage, int itemKey, boolean hasKey) {
+	public void initGhostGame(Stage ghostGameStage, Button key, int[] itemList, boolean hasKey) {
 		
 		ghostGameStage.show();
 		monsterImg.setOnMouseClicked(e->{
@@ -60,12 +60,12 @@ public class GhostGamePane extends BorderPane {
 		});
 		//点击返回按钮将会回到原来的界面
 		backBtn.setOnMouseClicked(e->{
-			EndGame(ghostGameStage, itemKey, hasKey);
+			EndGame(ghostGameStage, key, itemList, hasKey);
 		});
 		
 		//按钮点击后中间的小鬼可以点击，并且计算点击次数
 		startBtn.setOnAction(e -> {
-			System.out.println("key owns:"+ itemKey);
+			System.out.println("key owns:"+ itemList[0]);
 			btmBar.getChildren().remove(startBtn);
 			btmBar.getChildren().add(backBtn);
 			monsterImg.setDisable(false);
@@ -90,15 +90,17 @@ public class GhostGamePane extends BorderPane {
 	}
 	
 	//打鬼游戏结束，回到原来的scene
-	public void EndGame(Stage ghostGameStage, int itemKey, boolean hasKey) {
+	public void EndGame(Stage ghostGameStage, Button key, int[] itemList, boolean hasKey) {
 		//先判断游戏赢了还是输了
 		if(count>25 && hasKey) {
-			itemKey = 1;
-			System.out.println("you win, key owns:  "+ itemKey);
+			itemList[0] = 1;
+			System.out.println("you win, key owns:  "+ itemList[0]);
 		}else {
-			System.out.println("you lost, key owns: "+ itemKey);
-			itemKey = 0;
+			itemList[3]--;
+			System.out.println("you lost, key owns: "+ itemList[0] + "Blood left: "+ itemList[3]);
+			itemList[0] = 0;
 		}
+		key.setText(String.valueOf(itemList[0]));
 		ghostGameStage.close();
 	}
 
