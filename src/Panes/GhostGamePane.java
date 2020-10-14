@@ -113,5 +113,6 @@ public class GhostGamePane extends BorderPane {
 		this.setBottom(btmBar);
 		btmBar.setAlignment(Pos.CENTER);
 	}
+
 	
 }

@@ -186,28 +186,7 @@ public class GamePane extends BorderPane{
                         trapGamePane.initTrapGame(trapGameStage, blood, mazePane.player.itemList);
                         break;
                 }
-<<<<<<< HEAD
-                if (mazePane.player.visible ==true && (mazePane.player.x == mazePane.ghosts[0].x && mazePane.player.y == mazePane.ghosts[0].y)){
-        			System.out.println("this ghost has key");
-                	GhostGamePane ghostGamePane = new GhostGamePane();
-        			Scene ghostGameScene = new Scene(ghostGamePane);
-        			Stage ghostGameStage = new Stage();
-        			ghostGameStage.setTitle("Ghost Game");
-        			ghostGameStage.initStyle(StageStyle.UNDECORATED);
-        			ghostGameStage.setScene(ghostGameScene);
-        			ghostGamePane.initGhostGame(ghostGameStage, key, blood, mazePane.player.itemList, true); 
-                }else if(mazePane.player.visible ==true &&
-                		((mazePane.player.x == mazePane.ghosts[1].x && mazePane.player.y == mazePane.ghosts[1].y) ||
-                        (mazePane.player.x == mazePane.ghosts[2].x && mazePane.player.y == mazePane.ghosts[2].y))) {
-                	System.out.println("this ghost does not have key");
-                	GhostGamePane ghostGamePane = new GhostGamePane();
-        			Scene ghostGameScene = new Scene(ghostGamePane);
-        			Stage ghostGameStage = new Stage();
-        			ghostGameStage.setTitle("Ghost Game");
-        			ghostGameStage.initStyle(StageStyle.UNDECORATED);
-        			ghostGameStage.setScene(ghostGameScene);
-        			ghostGamePane.initGhostGame(ghostGameStage, key, blood, mazePane.player.itemList, false);
-=======
+
                 if (mazePane.getGhost(mazePane.player.x, mazePane.player.y) != null) {
                     // 如果遇到了鬼
                     GhostGamePane ghostGamePane = new GhostGamePane();
@@ -219,14 +198,13 @@ public class GamePane extends BorderPane{
                     MazePane.Ghost ghost = mazePane.getGhost(mazePane.player.x, mazePane.player.y);
                     if (ghost.equals(mazePane.ghosts[0])) {
                         System.out.println("this ghost has key");
-                        ghostGamePane.initGhostGame(ghostGameStage, key, mazePane.player.itemList, true);
+                        ghostGamePane.initGhostGame(ghostGameStage, key, blood, mazePane.player.itemList, true);
                     } else {
                         System.out.println("this ghost does not have key");
-                        ghostGamePane.initGhostGame(ghostGameStage, key, mazePane.player.itemList, false);
+                        ghostGamePane.initGhostGame(ghostGameStage, key, blood, mazePane.player.itemList, false);
                     }
                     ghost.x = 0;
                     ghost.y = 0;
->>>>>>> branch 'master' of https://github.com/liubq7/Tomb-Escape
                 }
             }
 
