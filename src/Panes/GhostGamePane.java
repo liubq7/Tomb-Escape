@@ -93,16 +93,19 @@ public class GhostGamePane extends BorderPane {
 	
 	//打鬼游戏结束，回到原来的scene
 	public void EndGame(Stage root, Stage ghostGameStage, Button key, Label status, Label blood, int[] itemList, boolean hasKey) {
-		//先判断游戏赢了还是输了
-		if(count>25 && hasKey) {
-			itemList[0] = 1;
-			System.out.println("you win, key owns:  "+ itemList[0]);
+		//先判断游戏赢了还是输了,再判断有无钥匙
+		if(count>25) {
+			if(hasKey) {
+				itemList[0] = 1;
+			}else {
+				itemList[0] = 0;
+			}
 		}else {
 			itemList[3]--;
 			blood.setText("Blood left:"+ String.valueOf(itemList[3]));
 			System.out.println("you lost, key owns: "+ itemList[0] + "Blood left: "+ itemList[3]);
-			itemList[0] = 0;
 		}
+
 		key.setText(String.valueOf(itemList[0]));
 		if(itemList[3] == 0) {
 			root.addEventFilter(KeyEvent.ANY, KeyEvent::consume);	//游戏输了不能再走了
