@@ -6,7 +6,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import Maze.MazeCreator;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
@@ -21,7 +24,10 @@ public class MazePane extends GridPane{
     Ghost[] ghosts;
     Random random;
 	int rows,cols;	//行列数
-	int startPositionX,startPositionY;
+//	int startPositionX,startPositionY;
+
+    private Timeline timeline = new Timeline();
+    private IntegerProperty timeSeconds = new SimpleIntegerProperty(0);
 
     public ImageView characterIcon;
     private ImageView doorView;
@@ -39,6 +45,7 @@ public class MazePane extends GridPane{
 		ghosts = new Ghost[3];
 		random = new Random();
 		for(int i=0; i<ghosts.length; i++) {
+		    // TODO: 鬼的起始位置在（1，1）
 			int ghostX = random.nextInt(cols);
 			int ghostY = random.nextInt(rows);
 			while(mazeCreator.maze[ghostX][ghostY].status != 1) {
@@ -51,36 +58,43 @@ public class MazePane extends GridPane{
 		
 		initImg();
 		initMazeLayouts(blockType);
-		ghostsMove();	// TODO：不知道鬼怎么走
+		ghostsMove();
 
         this.setFocusTraversable(true);
 	}
 
     private void ghostsMove() {
-		// TODO Auto-generated method stub
-		//int direction = 1;	//direction 表示鬼的移动方向，1表示坐，-1表示右
-		/*for(int i=0; i<ghosts.length; i++) {
-			startPositionX = ghosts[i].x;
-			startPositionY = ghosts[i].y;
+        // TODO：不知道鬼怎么走
+		int direction = 1;	//direction 表示鬼的移动方向，1表示坐，-1表示右
+		for(int i=0; i<ghosts.length; i++) {
+//			startPositionX = ghosts[i].x;
+//			startPositionY = ghosts[i].y;
+			Ghost ghost = ghosts[i];
 			ImageView thisView = ghosts[i].ghostView;
 			Timer timer = new Timer();
 			//当一直可以往坐走的时候
-				timer.scheduleAtFixedRate(new TimerTask() {
-					@Override
-					public void run() {
-						while((mazeCreator.maze[startPositionX-1][startPositionY]).status == 1) {
-							int nowPositionX = startPositionX--;
-							int nowPositionY = startPositionY;
-							mazeCreator.maze[nowPositionX][nowPositionY].setCenter(thisView);
-						}
-						while((mazeCreator.maze[startPositionX+1][startPositionY]).status == 1) {
-							int nowPositionX = startPositionX++;
-							int nowPositionY = startPositionY;
-							mazeCreator.maze[nowPositionX][nowPositionY].setCenter(thisView);
-						}
-					}
-				}, 0, 1000);
-			}*/
+            timer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    Platform.runLater(() -> {
+                        // TODO:控制其他方向即碰壁返回，人会被鬼吃掉
+                        while((mazeCreator.maze[ghost.x+1][ghost.y]).status == 1) {
+                            ghost.x ++;
+                            mazeCreator.maze[ghost.x][ghost.y].setCenter(thisView);
+                        }
+                    });
+//                    while((mazeCreator.maze[ghost.x+1][ghost.y]).status == 1) {
+//                        ghost.x ++;
+//                        mazeCreator.maze[ghost.x][ghost.y].setCenter(thisView);
+//                    }
+//                    while((mazeCreator.maze[startPositionX+1][startPositionY]).status == 1) {
+//                        int nowPositionX = startPositionX++;
+//                        int nowPositionY = startPositionY;
+//                        mazeCreator.maze[nowPositionX][nowPositionY].setCenter(thisView);
+//                    }
+                }
+            }, 0, 1000);
+		}
 	}
 
     public class Ghost{
@@ -103,6 +117,7 @@ public class MazePane extends GridPane{
         }
         return null;
     }
+
     public class Player {
         int x,y;	//保存坐标
         private int characterType;
