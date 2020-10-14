@@ -25,9 +25,6 @@ public class MazePane extends GridPane{
     Random random;
 	int rows,cols;	//行列数
 
-    private Timeline timeline = new Timeline();
-    private IntegerProperty timeSeconds = new SimpleIntegerProperty(0);
-
     public ImageView characterIcon;
     private ImageView doorView;
 
@@ -53,7 +50,7 @@ public class MazePane extends GridPane{
 			}
 			ghosts[i] = new Ghost(ghostX,ghostY,false);
 		}
-		ghosts[0].hasKey = true;	//随机某个鬼身上有钥匙
+		ghosts[0].hasKey = true;	//鬼0身上有钥匙
 		
 		initImg();
 		initMazeLayouts(blockType);
@@ -63,8 +60,6 @@ public class MazePane extends GridPane{
 	}
 
     private void ghostsMove() {
-        // TODO：不知道鬼怎么走
-		int direction = 1;	//direction 表示鬼的移动方向，1表示坐，-1表示右
 		for(int i=0; i<ghosts.length; i++) {
 			Ghost ghost = ghosts[i];
 			ImageView thisView = ghosts[i].ghostView;
@@ -73,14 +68,37 @@ public class MazePane extends GridPane{
                 @Override
                 public void run() {
                     Platform.runLater(() -> {
-                        // TODO:控制其他方向即碰壁返回，人会被鬼吃掉
-                        while((mazeCreator.maze[ghost.x+1][ghost.y]).status == 1) {
-                            ghost.x ++;
-                            mazeCreator.maze[ghost.x][ghost.y].setCenter(thisView);
+                        ArrayList<Integer> dirList = ghost.checkDir();
+                        if (!dirList.isEmpty()) {
+                            random = new Random();
+                            int dir = dirList.get(random.nextInt(dirList.size()));
+                            switch (dir) {
+                                case 0:
+                                    ghost.x++;
+                                    mazeCreator.maze[ghost.x][ghost.y].setCenter(thisView);
+                                    break;
+                                case 1:
+                                    ghost.y++;
+                                    mazeCreator.maze[ghost.x][ghost.y].setCenter(thisView);
+                                    break;
+                                case 2:
+                                    ghost.x--;
+                                    mazeCreator.maze[ghost.x][ghost.y].setCenter(thisView);
+                                    break;
+                                case 3:
+                                    ghost.y--;
+                                    mazeCreator.maze[ghost.x][ghost.y].setCenter(thisView);
+                                    break;
+                            }
                         }
                     });
                 }
             }, 0, 1000);
+            if (ghost.x == player.x && ghost.y == player.y) {
+                ghost.x = 0;
+                ghost.y = 0;
+                timer.cancel();
+            }
 		}
 	}
 
@@ -94,6 +112,24 @@ public class MazePane extends GridPane{
     		this.x = x;
     		this.y = y;	
     	}
+
+    	// 获取周围能走的方向(没有人的方向）
+        private ArrayList<Integer> checkDir() {
+            ArrayList<Integer> dirList = new ArrayList<>();
+            if (x + 1 < cols && (mazeCreator.maze[x + 1][y]).status == 1 && !(x + 1 == player.x && y == player.y)) {
+                dirList.add(0);
+            }
+            if (y + 1 < rows && (mazeCreator.maze[x][y + 1]).status == 1 && !(x == player.x && y + 1 == player.y)) {
+                dirList.add(1);
+            }
+            if (x - 1 > 0 && (mazeCreator.maze[x - 1][y]).status == 1 && !(x - 1 == player.x && y == player.y)) {
+                dirList.add(2);
+            }
+            if (y - 1 > 0 && (mazeCreator.maze[x][y - 1]).status == 1 && !(x == player.x && y - 1 == player.y)) {
+                dirList.add(3);
+            }
+            return dirList;
+        }
     }
     // 通过坐标获取该位置的鬼，该位置没有鬼则返回null
     public Ghost getGhost(int x, int y) {
@@ -104,6 +140,8 @@ public class MazePane extends GridPane{
         }
         return null;
     }
+
+
 
     public class Player {
         int x,y;	//保存坐标

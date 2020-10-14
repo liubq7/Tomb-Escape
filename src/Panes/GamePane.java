@@ -164,6 +164,7 @@ public class GamePane extends BorderPane{
                         }
                         break;
                 }
+
                 int propType = mazePane.player.getProp();
                 switch (propType) {
                     case 1:
