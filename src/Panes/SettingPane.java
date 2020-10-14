@@ -36,10 +36,11 @@ public class SettingPane extends VBox{
 		
 		settingTitle = new Label("Settings");
 		settingTitle.setFont(new Font("Arial", 30));
-		characterTitle = new Label("Character: ");
+		settingTitle.setPadding(new Insets(0, 0, 20, 0));
+
 		hpTitle = new Label("HP: ");
 		proTitle = new Label("Pro: ");
-		tileTitle = new Label("Tile: ");
+
 		characterBtn = new RadioButton[3];
 		tileBtn = new RadioButton[3];
 		characterGroup = new ToggleGroup();
@@ -48,6 +49,7 @@ public class SettingPane extends VBox{
 		tileBox = new HBox();
 		characterImg = new ImageView[3];
 		tileImg = new ImageView[3];
+
 		startBtn = new Button("Start");
 		
 		initImgBtn();	//把每个单选按钮加到对应的Toggle Group 里并且加上图片
@@ -104,6 +106,7 @@ public class SettingPane extends VBox{
 			characterImg[i].setPreserveRatio(true);
 			characterBtn[i] = new RadioButton();
 			characterBtn[i].setGraphic(characterImg[i]);
+			characterBtn[i].setPadding(new Insets(10, 10, 5, 10));
 			characterBtn[i].setToggleGroup(characterGroup);
 			characterBtn[i].setUserData(String.valueOf(i));	//保留数据用于选中时分析 0-战士 1-牧师 2-卫士
 			
@@ -112,6 +115,7 @@ public class SettingPane extends VBox{
 			tileImg[i].setPreserveRatio(true);
 			tileBtn[i] = new RadioButton();
 			tileBtn[i].setGraphic(tileImg[i]);
+			tileBtn[i].setPadding(new Insets(20, 10, 10, 10));
 			tileBtn[i].setToggleGroup(tileGroup);
 			tileBtn[i].setUserData(String.valueOf(i));
 		}
