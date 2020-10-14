@@ -28,12 +28,13 @@ public class GamePane extends BorderPane{
 	MazePane mazePane;	//中间是一个gridpane
 	Button[] btmBarButton;	//btmBar的按钮组件 0-重启 1-钥匙 2-铲子 3- 隐身衣 4-主页
 	ImageView[] btmBarImg;	//btmBar里每一个按钮的图
+	int cols,rows;
 
     private Button key;
     private Button shovel;
     private Button cloak;
-    private Button restart;
-    private Button home;
+    Button restart;
+    Button home;
 
     private Label status;
     private Label blood;
@@ -47,7 +48,9 @@ public class GamePane extends BorderPane{
     private EventHandler<DragEvent> dragDoneListener;
 
 	
-	public GamePane(int x, int y, int characterType, int blockType) {
+	public GamePane(int x, int y, int characterType, int blockType, Stage root) {
+		cols = x;
+		rows = y;
 		topBar = new HBox();
 		btmBar = new HBox();
 		mazePane = new MazePane(x, y, characterType, blockType);
@@ -69,7 +72,7 @@ public class GamePane extends BorderPane{
 		initWholePane();	//把整个Pane上的组件摆上去
 
         this.setFocusTraversable(true);
-        initListener();
+        initListener(root,characterType,blockType);
         this.setOnKeyPressed(keyboardListener);
 	}
 
@@ -114,7 +117,7 @@ public class GamePane extends BorderPane{
 		
 	}
 
-    private void initListener() {
+    private void initListener(Stage root, int characterType, int blockType) {
         keyboardListener = new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
@@ -125,6 +128,9 @@ public class GamePane extends BorderPane{
                         if (mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y + 1].status != 0) {
                             mazePane.player.y += 1;
                             mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y].setCenter(mazePane.characterIcon);
+                        }else if((mazePane.player.x == mazePane.cols-2)&&(mazePane.player.y+1 == mazePane.rows-1)&&mazePane.player.itemList[0]==1) {
+                        	mazePane.player.y += 1;
+                        	gameWin();
                         }
                         break;
                     case W:
@@ -132,6 +138,9 @@ public class GamePane extends BorderPane{
                         if (mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y - 1].status != 0) {
                             mazePane.player.y -= 1;
                             mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y].setCenter(mazePane.characterIcon);
+                        }else if((mazePane.player.x == mazePane.cols-2)&&(mazePane.player.y-1 == mazePane.rows-1)&&mazePane.player.itemList[0]==1) {
+                        	mazePane.player.y -= 1;
+                        	gameWin();
                         }
                         break;
                     case A:
@@ -139,6 +148,9 @@ public class GamePane extends BorderPane{
                         if (mazePane.mazeCreator.maze[mazePane.player.x - 1][mazePane.player.y].status != 0) {
                             mazePane.player.x -= 1;
                             mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y].setCenter(mazePane.characterIcon);
+                        }else if((mazePane.player.x-1 == mazePane.cols-2)&&(mazePane.player.y == mazePane.rows-1)&&mazePane.player.itemList[0]==1) {
+                        	mazePane.player.x -= 1;
+                        	gameWin();
                         }
                         break;
                     case D:
@@ -146,6 +158,9 @@ public class GamePane extends BorderPane{
                         if (mazePane.mazeCreator.maze[mazePane.player.x + 1][mazePane.player.y].status != 0) {
                             mazePane.player.x += 1;
                             mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y].setCenter(mazePane.characterIcon);
+                        }else if((mazePane.player.x+1 == mazePane.cols-2)&&(mazePane.player.y == mazePane.rows-1)&&mazePane.player.itemList[0]==1) {
+                        	mazePane.player.x += 1;
+                        	gameWin();
                         }
                         break;
                 }
@@ -171,6 +186,7 @@ public class GamePane extends BorderPane{
                         trapGamePane.initTrapGame(trapGameStage, blood, mazePane.player.itemList);
                         break;
                 }
+
                 if (mazePane.getGhost(mazePane.player.x, mazePane.player.y) != null) {
                     // 如果遇到了鬼
                     GhostGamePane ghostGamePane = new GhostGamePane();
@@ -182,15 +198,20 @@ public class GamePane extends BorderPane{
                     MazePane.Ghost ghost = mazePane.getGhost(mazePane.player.x, mazePane.player.y);
                     if (ghost.equals(mazePane.ghosts[0])) {
                         System.out.println("this ghost has key");
-                        ghostGamePane.initGhostGame(ghostGameStage, key, mazePane.player.itemList, true);
+                        ghostGamePane.initGhostGame(ghostGameStage, key, blood, mazePane.player.itemList, true);
                     } else {
                         System.out.println("this ghost does not have key");
-                        ghostGamePane.initGhostGame(ghostGameStage, key, mazePane.player.itemList, false);
+                        ghostGamePane.initGhostGame(ghostGameStage, key, blood, mazePane.player.itemList, false);
                     }
                     ghost.x = 0;
                     ghost.y = 0;
                 }
             }
+
+			private void gameWin() {
+				mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y].setCenter(mazePane.characterIcon);
+				status.setText("Player Status: Win");
+			}
         };
 
         dragDetector = new EventHandler<MouseEvent>() {
@@ -347,6 +368,19 @@ public class GamePane extends BorderPane{
             ft.play();
         	timer.cancel();
         	timer.purge();
+        });
+        
+        home.setOnMouseClicked(e->{
+        	HomePane newHomePane = new HomePane(root);
+        	Scene newHomeScene = new Scene(newHomePane);
+        	root.setScene(newHomeScene);
+        });
+        
+        restart.setOnMouseClicked(e->{
+        	GamePane newGamePane = new GamePane(35,21,characterType,blockType,root);
+			Scene newGameScene = new Scene(newGamePane);
+			root.setScene(newGameScene);
+			System.out.println("character choose:" + characterType+ "tile choose:" + blockType);
         });
 
         for (int i = 0; i < mazePane.cols; i++) {
