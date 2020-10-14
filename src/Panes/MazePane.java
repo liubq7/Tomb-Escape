@@ -1,5 +1,6 @@
 package Panes;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -50,7 +51,7 @@ public class MazePane extends GridPane{
 		
 		initImg();
 		initMazeLayouts(blockType);
-		ghostsMove();	//todo：不知道鬼怎么走
+		ghostsMove();	// TODO：不知道鬼怎么走
 
         this.setFocusTraversable(true);
 	}
@@ -59,7 +60,7 @@ public class MazePane extends GridPane{
 
 	}
 
-	public class Ghost{
+    public class Ghost{
     	int x,y;	//保存坐标
     	boolean hasKey;	//0代表没有钥匙，1代表有钥匙
     	ImageView ghostView;
@@ -69,7 +70,15 @@ public class MazePane extends GridPane{
     		this.x = x;
     		this.y = y;	
     	}
-
+    }
+    // 通过坐标获取该位置的鬼，该位置没有鬼则返回null
+    public Ghost getGhost(int x, int y) {
+        for (int i = 0; i < ghosts.length; i++) {
+            if (x == ghosts[i].x && y == ghosts[i].y) {
+                return ghosts[i];
+            }
+        }
+        return null;
     }
     public class Player {
         int x,y;	//保存坐标
