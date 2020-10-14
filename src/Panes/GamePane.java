@@ -172,7 +172,7 @@ public class GamePane extends BorderPane{
                         break;
                 }
                 if (mazePane.getGhost(mazePane.player.x, mazePane.player.y) != null) {
-                    //TODO: 钥匙在GamePane 上也没有更新
+                    // 如果遇到了鬼
                     GhostGamePane ghostGamePane = new GhostGamePane();
                     Scene ghostGameScene = new Scene(ghostGamePane);
                     Stage ghostGameStage = new Stage();
