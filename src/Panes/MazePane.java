@@ -6,15 +6,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import Maze.MazeCreator;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 
 public class MazePane extends GridPane{
@@ -23,7 +17,7 @@ public class MazePane extends GridPane{
     Player player;
     Ghost[] ghosts;
     Random random;
-	int rows,cols;	//行列数
+    int rows,cols;	//行列数
 
     public ImageView characterIcon;
     private ImageView doorView;
@@ -41,10 +35,9 @@ public class MazePane extends GridPane{
 		ghosts = new Ghost[3];
 		random = new Random();
 		for(int i=0; i<ghosts.length; i++) {
-		    // TODO: 鬼的起始位置在（1，1）
 			int ghostX = random.nextInt(cols);
 			int ghostY = random.nextInt(rows);
-			while(mazeCreator.maze[ghostX][ghostY].status != 1) {
+			while(mazeCreator.maze[ghostX][ghostY].status != 1 || (ghostX == 1 && ghostY == 1)) {
 				ghostX = random.nextInt(cols);
 				ghostY = random.nextInt(rows);
 			}
@@ -60,10 +53,10 @@ public class MazePane extends GridPane{
 	}
 
     private void ghostsMove() {
-		for(int i=0; i<ghosts.length; i++) {
-			Ghost ghost = ghosts[i];
-			ImageView thisView = ghosts[i].ghostView;
-			Timer timer = new Timer();
+        for(int i=0; i<ghosts.length; i++) {
+            Ghost ghost = ghosts[i];
+            ImageView thisView = ghosts[i].ghostView;
+            Timer timer = new Timer();
             timer.scheduleAtFixedRate(new TimerTask() {
                 @Override
                 public void run() {

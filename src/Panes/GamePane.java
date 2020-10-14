@@ -2,7 +2,6 @@ package Panes;
 
 import Maze.Cell;
 import javafx.animation.FadeTransition;
-import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -24,11 +23,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class GamePane extends BorderPane{
-	HBox topBar,btmBar;	//上下分别用两个HBOX放组件
-	MazePane mazePane;	//中间是一个gridpane
-	Button[] btmBarButton;	//btmBar的按钮组件 0-重启 1-钥匙 2-铲子 3- 隐身衣 4-主页
-	ImageView[] btmBarImg;	//btmBar里每一个按钮的图
-	int cols,rows;
+    HBox topBar,btmBar;	//上下分别用两个HBOX放组件
+    MazePane mazePane;	//中间是一个gridpane
+    Button[] btmBarButton;	//btmBar的按钮组件 0-重启 1-钥匙 2-铲子 3- 隐身衣 4-主页
+    ImageView[] btmBarImg;	//btmBar里每一个按钮的图
+    int cols,rows;
 
     private Button key;
     private Button shovel;
@@ -48,14 +47,14 @@ public class GamePane extends BorderPane{
     private EventHandler<DragEvent> dragDoneListener;
 
 	
-	public GamePane(int x, int y, int characterType, int blockType, Stage root) {
-		cols = x;
-		rows = y;
-		topBar = new HBox();
-		btmBar = new HBox();
-		mazePane = new MazePane(x, y, characterType, blockType);
-		btmBarButton = new Button[5];
-		btmBarImg = new ImageView[5];
+    public GamePane(int x, int y, int characterType, int blockType, Stage root) {
+        cols = x;
+        rows = y;
+        topBar = new HBox();
+        btmBar = new HBox();
+        mazePane = new MazePane(x, y, characterType, blockType);
+        btmBarButton = new Button[5];
+        btmBarImg = new ImageView[5];
 
         key = new Button();
         shovel = new Button();
@@ -66,10 +65,10 @@ public class GamePane extends BorderPane{
         status = new Label("Play status: Playing");
         blood = new Label("Blood left: " + mazePane.player.itemList[3]);
 
-		iniTopBar();	//把topBar安置好
-		initBtmBar();	//把btmBar安置好
-		initCenter();	//把中间的mazepane安置好
-		initWholePane();	//把整个Pane上的组件摆上去
+        iniTopBar();	//把topBar安置好
+        initBtmBar();	//把btmBar安置好
+        initCenter();	//把中间的mazepane安置好
+        initWholePane();	//把整个Pane上的组件摆上去
 
         this.setFocusTraversable(true);
         initListener(root,characterType,blockType);
@@ -77,29 +76,29 @@ public class GamePane extends BorderPane{
 	}
 
 	private void initCenter() {
-		mazePane.setAlignment(Pos.CENTER);
+        mazePane.setAlignment(Pos.CENTER);
 	}
 
 	private void initWholePane() {
-		this.setTop(topBar);
-		this.setCenter(mazePane);
-		this.setBottom(btmBar);
+        this.setTop(topBar);
+        this.setCenter(mazePane);
+        this.setBottom(btmBar);
 	}
 
-	private void initBtmBar() {
+    private void initBtmBar() {
         btmBarButton[0] = restart;
         btmBarButton[1] = key;
         btmBarButton[2] = shovel;
         btmBarButton[3] = cloak;
         btmBarButton[4] = home;
 
-		for(int i=0; i<btmBarButton.length; i++) {
+        for(int i = 0; i < btmBarButton.length; i++) {
 			btmBarImg[i] = new ImageView(new Image("file:images/btmBarImg/" + String.valueOf(i) + ".png"));
 			btmBarImg[i].setFitHeight(30);
 			btmBarImg[i].setPreserveRatio(true);
 			btmBarButton[i].setGraphic(btmBarImg[i]);
 			btmBarButton[i].setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
-			if(i>=1 && i<=3) {
+			if(i >= 1 && i <= 3) {
 				btmBarButton[i].setText(Integer.toString(mazePane.player.itemList[i - 1]));
 			}
 			btmBar.getChildren().add(btmBarButton[i]);
@@ -109,7 +108,7 @@ public class GamePane extends BorderPane{
 		btmBar.setSpacing(10);
 	}
 
-	private void iniTopBar() {
+    private void iniTopBar() {
         topBar.getChildren().addAll(status, blood);
 		topBar.setPadding(new Insets(10,10,10,10));
 		topBar.setSpacing(50);
@@ -209,11 +208,11 @@ public class GamePane extends BorderPane{
                 }
             }
 
-			private void gameWin() {
-				mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y].setCenter(mazePane.characterIcon);
-				status.setText("Player Status: Win");
-				root.addEventFilter(KeyEvent.ANY, KeyEvent::consume); //disable key event
-			}
+            private void gameWin() {
+            	mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y].setCenter(mazePane.characterIcon);
+            	status.setText("Player Status: Win");
+            	root.addEventFilter(KeyEvent.ANY, KeyEvent::consume); //disable key event
+            }
         };
 
         dragDetector = new EventHandler<MouseEvent>() {
