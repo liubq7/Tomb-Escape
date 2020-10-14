@@ -11,6 +11,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -53,23 +54,33 @@ public class TrapGamePane extends BorderPane{
     }
 
 
-    void initTrapGame(Stage trapGameStage,int bloodLeft) {
+    void initTrapGame(Stage trapGameStage,Label blood, int[] itemList) {
 		trapGameStage.show();
     	btmBar.setSpacing(20);
 		btmBar.getChildren().addAll(startBtn);
 		btmBar.setAlignment(Pos.CENTER);
 		this.setBottom(btmBar);
 		startBtn.setOnMouseClicked(e->{
-			System.out.println("bloodLeft:"+ bloodLeft);
-			fireBullet(this,shield,bloodLeft);	//让子弹飞
+			System.out.println("bloodLeft:"+ itemList[3]);
+			fireBullet(this,shield);	//让子弹飞
 	    	btmBar.getChildren().remove(startBtn);	//只能按一次
 	    	btmBar.getChildren().add(backBtn);
 		});
 		backBtn.setOnMouseClicked(e->{
-
-			trapGameStage.close();	//回到迷宫界面
-			System.out.println("bloodLeft:"+ bloodLeft);
+			EndGame(trapGameStage,blood,itemList);
 		});
+	}
+
+
+	private void EndGame(Stage trapGameStage,Label blood, int[] itemList) {
+		
+    	if(NUM_HITS < NUM_BULLETS) {
+    		itemList[3]--;	//如果接到的子弹数小于设置的子弹数，就会让血-1
+    	}
+		System.out.println("bullet nums:"+ NUM_BULLETS+ " hit nums:"+ NUM_HITS);
+		System.out.println("bloodLeft:"+ itemList[3]);
+		blood.setText("Blood left: " + itemList[3]);
+		trapGameStage.close();	//回到迷宫界面
 	}
 
 
@@ -97,7 +108,7 @@ public class TrapGamePane extends BorderPane{
 	}
 
 
-	private void fireBullet(Pane pane, List<Arc> shield, int bloodLeft) {
+	private void fireBullet(Pane pane, List<Arc> shield) {
 		
     	for(int i=0; i<NUM_BULLETS; i++) {
         	Circle bullet = new Circle(2, Color.BLACK);
@@ -131,9 +142,6 @@ public class TrapGamePane extends BorderPane{
     		bulletAnimation.playFrom(Duration.seconds(RNG.nextInt(1)));;	//让子弹从某一任意时刻开始飞
     	}
 
-    	if(NUM_HITS < NUM_BULLETS) {
-    		bloodLeft--;	//如果接到的子弹数小于设置的子弹数，就会让血-1
-    	}
 	}
 
 
