@@ -27,8 +27,8 @@ public class SettingPane extends VBox{
 	Label settingTitle,characterTitle,hpTitle,proTitle,tileTitle;			
 	ImageView[] characterImg,tileImg;					
 	Button startBtn;			
-	String[] hpInfo = new String[] {"2 points","3 points","2 points"};
-	String[] proInfo = new String[] {"1 spade","1 more blood points","1 invisible coak"};
+	String[] hpInfo = new String[] {"2 points","2 points","3 points"};
+	String[] proInfo = new String[] {"1 spade","1 invisible coak","1 more blood"};
 	HBox characterBox,tileBox;
 	ToggleGroup characterGroup,tileGroup;	//单选按钮组
 	RadioButton[] characterBtn,tileBtn;		//单选按钮数组
@@ -36,6 +36,7 @@ public class SettingPane extends VBox{
 
 	/**
 	 * 
+	 * @param homeScene 
 	 * @param stage 用来切换场景和scene
 	 * @param scene
 	 */
@@ -97,7 +98,7 @@ public class SettingPane extends VBox{
 		        }
 		});
 		startBtn.setOnMouseClicked(e->{
-			GamePane newGamePane = new GamePane(35,21,characterPick,tilePick);
+			GamePane newGamePane = new GamePane(35,21,characterPick,tilePick,root);
 			Scene newGameScene = new Scene(newGamePane);
 			root.setScene(newGameScene);
 			System.out.println("character choose:" + characterPick + "tile choose:" + tilePick);
@@ -113,7 +114,7 @@ public class SettingPane extends VBox{
 			characterBtn[i] = new RadioButton();
 			characterBtn[i].setGraphic(characterImg[i]);
 			characterBtn[i].setToggleGroup(characterGroup);
-			characterBtn[i].setUserData(String.valueOf(i));	//保留数据用于选中时分析 0-战士 1-护士 2-卫士
+			characterBtn[i].setUserData(String.valueOf(i));	//保留数据用于选中时分析 0-战士 1-牧师 2-卫士
 			
 			tileImg[i] = new ImageView(new Image("file:images/tileChoose/"+ String.valueOf(i)+".png"));
 			tileImg[i].setFitHeight(80);

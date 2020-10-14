@@ -56,30 +56,7 @@ public class MazePane extends GridPane{
 	}
 
     private void ghostsMove() {
-		// TODO Auto-generated method stub
-		//int direction = 1;	//direction 表示鬼的移动方向，1表示坐，-1表示右
-		/*for(int i=0; i<ghosts.length; i++) {
-			startPositionX = ghosts[i].x;
-			startPositionY = ghosts[i].y;
-			ImageView thisView = ghosts[i].ghostView;
-			Timer timer = new Timer();
-			//当一直可以往坐走的时候
-				timer.scheduleAtFixedRate(new TimerTask() {
-					@Override
-					public void run() {
-						while((mazeCreator.maze[startPositionX-1][startPositionY]).status == 1) {
-							int nowPositionX = startPositionX--;
-							int nowPositionY = startPositionY;
-							mazeCreator.maze[nowPositionX][nowPositionY].setCenter(thisView);
-						}
-						while((mazeCreator.maze[startPositionX+1][startPositionY]).status == 1) {
-							int nowPositionX = startPositionX++;
-							int nowPositionY = startPositionY;
-							mazeCreator.maze[nowPositionX][nowPositionY].setCenter(thisView);
-						}
-					}
-				}, 0, 1000);
-			}*/
+
 	}
 
 	public class Ghost{
@@ -139,10 +116,6 @@ public class MazePane extends GridPane{
             }
         }
         
-        //如果走到鬼那个地方，就触发打鬼游戏，打完再回到原来的游戏场景
-        public void fightGhost() {
-        	
-        }
     }
 
     private void initMazeLayouts(int blockType) {

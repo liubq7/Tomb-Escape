@@ -14,21 +14,12 @@ public class PaneTest extends Application {
 	@Override
 	public void start(Stage root) {
 
-		homePane = new HomePane();
+		homePane = new HomePane(root);
 		homeScene = new Scene(homePane);
-				
-		settingPane = new SettingPane(root);
-		settingScene = new Scene(settingPane);
-		
-
 		root.setScene(homeScene);
 		root.setTitle("Tomb-Escape");
 		root.show();
-		homePane.newgameBtn.setOnMouseClicked(e->{
-			root.setScene(settingScene);
-		});
 	}
-
 	
 	public static void main(String[] args) {
 		launch(args);
