@@ -165,21 +165,22 @@ public class GamePane extends BorderPane{
             			trapGamePane.initTrapGame(trapGameStage, mazePane.player.itemList[3]);	//TODO: 血再gamePane上还是没有掉
                         break;
                 }
-                if ((mazePane.player.x == mazePane.ghosts[0].x && mazePane.player.y == mazePane.ghosts[0].y)){
-        			System.out.println("this ghost has key");
-                	GhostGamePane ghostGamePane = new GhostGamePane();
-        			Scene ghostGameScene = new Scene(ghostGamePane);
-        			Stage ghostGameStage = new Stage();
-        			ghostGameStage.setScene(ghostGameScene);
-        			ghostGamePane.initGhostGame(ghostGameStage, mazePane.player.itemList[0], true); //TODO: 钥匙在GamePane 上也没有更新，鬼图标消失但是还在那个位置
-                }else if((mazePane.player.x == mazePane.ghosts[1].x && mazePane.player.y == mazePane.ghosts[1].y) ||
-                        (mazePane.player.x == mazePane.ghosts[2].x && mazePane.player.y == mazePane.ghosts[2].y)) {
-                	System.out.println("this ghost does not have key");
-                	GhostGamePane ghostGamePane = new GhostGamePane();
-        			Scene ghostGameScene = new Scene(ghostGamePane);
-        			Stage ghostGameStage = new Stage();
-        			ghostGameStage.setScene(ghostGameScene);
-        			ghostGamePane.initGhostGame(ghostGameStage, mazePane.player.itemList[0], false);
+                if (mazePane.getGhost(mazePane.player.x, mazePane.player.y) != null) {
+                    //TODO: 钥匙在GamePane 上也没有更新
+                    GhostGamePane ghostGamePane = new GhostGamePane();
+                    Scene ghostGameScene = new Scene(ghostGamePane);
+                    Stage ghostGameStage = new Stage();
+                    ghostGameStage.setScene(ghostGameScene);
+                    MazePane.Ghost ghost = mazePane.getGhost(mazePane.player.x, mazePane.player.y);
+                    if (ghost.equals(mazePane.ghosts[0])) {
+                        System.out.println("this ghost has key");
+                        ghostGamePane.initGhostGame(ghostGameStage, mazePane.player.itemList[0], true);
+                    } else {
+                        System.out.println("this ghost does not have key");
+                        ghostGamePane.initGhostGame(ghostGameStage, mazePane.player.itemList[0], false);
+                    }
+                    ghost.x = 0;
+                    ghost.y = 0;
                 }
             }
         };
