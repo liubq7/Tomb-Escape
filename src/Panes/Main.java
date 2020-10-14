@@ -4,7 +4,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class PaneTest extends Application {
+public class Main extends Application {
 
 	HomePane homePane;
 	Scene homeScene;

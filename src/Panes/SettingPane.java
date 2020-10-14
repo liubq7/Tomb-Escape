@@ -1,5 +1,6 @@
 package Panes;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -9,19 +10,14 @@ import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.InputEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.awt.Event;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
+
 
 public class SettingPane extends VBox{
 	Label settingTitle,characterTitle,hpTitle,proTitle,tileTitle;			
@@ -34,14 +30,9 @@ public class SettingPane extends VBox{
 	RadioButton[] characterBtn,tileBtn;		//单选按钮数组
 	int characterPick,tilePick;	//用来保存最终用户选择了哪一个角色/哪一种墙背景 然后传递给mazepane
 
-	/**
-	 * 
-	 * @param homeScene 
-	 * @param stage 用来切换场景和scene
-	 * @param scene
-	 */
+
 	public SettingPane(Stage root) {
-		
+		this.setPadding(new Insets(20, 20, 20, 20));
 		
 		settingTitle = new Label("Settings");
 		settingTitle.setFont(new Font("Arial", 30));
