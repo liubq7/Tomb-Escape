@@ -16,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -51,8 +52,9 @@ public class GhostGamePane extends BorderPane {
 		//initGhostGame(ghostGameStage, itemKey, hasKey);
 	}
 
-	public void initGhostGame(Stage ghostGameStage, Button key, Label blood, int[] itemList, boolean hasKey) {
+	public void initGhostGame(Stage root, Stage ghostGameStage, Button key, Label status, Label blood, int[] itemList, boolean hasKey) {
 		
+		root.hide();
 		ghostGameStage.show();
 		monsterImg.setOnMouseClicked(e->{
 			count++;
@@ -60,7 +62,7 @@ public class GhostGamePane extends BorderPane {
 		});
 		//点击返回按钮将会回到原来的界面
 		backBtn.setOnMouseClicked(e->{
-			EndGame(ghostGameStage, key, blood, itemList, hasKey);
+			EndGame(root,ghostGameStage, key, status, blood, itemList, hasKey);
 		});
 		
 		//按钮点击后中间的小鬼可以点击，并且计算点击次数
@@ -90,7 +92,7 @@ public class GhostGamePane extends BorderPane {
 	}
 	
 	//打鬼游戏结束，回到原来的scene
-	public void EndGame(Stage ghostGameStage, Button key, Label blood, int[] itemList, boolean hasKey) {
+	public void EndGame(Stage root, Stage ghostGameStage, Button key, Label status, Label blood, int[] itemList, boolean hasKey) {
 		//先判断游戏赢了还是输了
 		if(count>25 && hasKey) {
 			itemList[0] = 1;
@@ -102,7 +104,12 @@ public class GhostGamePane extends BorderPane {
 			itemList[0] = 0;
 		}
 		key.setText(String.valueOf(itemList[0]));
+		if(itemList[3] == 0) {
+			root.addEventFilter(KeyEvent.ANY, KeyEvent::consume);	//游戏输了不能再走了
+			status.setText("Player status: lost");
+		}
 		ghostGameStage.close();
+		root.show();
 	}
 
 	private void initLayout() {

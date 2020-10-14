@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
@@ -45,17 +46,20 @@ public class TrapGamePane extends BorderPane{
     public TrapGamePane() {
     	this.setPrefWidth(WIDTH);
     	this.setPrefHeight(HEIGHT);
-    	character = new ImageView(new Image("file:images/ghost.png"));	//把人的icon放中间
+    	character = new ImageView();	//把人的icon放中间
     	startBtn = new Button("start");
     	backBtn = new Button("back");
     	btmBar = new HBox();
-    	initCharacter();	//把character图像位置调整好
-    	initShield();	//把盾初始化
+
     }
 
 
-    void initTrapGame(Stage trapGameStage,Label blood, int[] itemList) {
-		trapGameStage.show();
+    void initTrapGame(Stage root,Stage trapGameStage,Label status, Label blood, int[] itemList, int characterType) {
+    	
+    	root.hide();	//hide the original game scene
+    	initCharacter(characterType);	//把character图像位置调整好
+    	initShield();	//把盾初始化
+    	trapGameStage.show();
     	btmBar.setSpacing(20);
 		btmBar.getChildren().addAll(startBtn);
 		btmBar.setAlignment(Pos.CENTER);
@@ -67,12 +71,12 @@ public class TrapGamePane extends BorderPane{
 	    	btmBar.getChildren().add(backBtn);
 		});
 		backBtn.setOnMouseClicked(e->{
-			EndGame(trapGameStage,blood,itemList);
+			EndGame(root, trapGameStage, status, blood, itemList);
 		});
 	}
 
 
-	private void EndGame(Stage trapGameStage,Label blood, int[] itemList) {
+	private void EndGame(Stage root, Stage trapGameStage, Label status, Label blood, int[] itemList) {
 		
     	if(NUM_HITS < NUM_BULLETS) {
     		itemList[3]--;	//如果接到的子弹数小于设置的子弹数，就会让血-1
@@ -80,12 +84,18 @@ public class TrapGamePane extends BorderPane{
 		System.out.println("bullet nums:"+ NUM_BULLETS+ " hit nums:"+ NUM_HITS);
 		System.out.println("bloodLeft:"+ itemList[3]);
 		blood.setText("Blood left: " + itemList[3]);
+		if(itemList[3] == 0) {
+			root.addEventFilter(KeyEvent.ANY, KeyEvent::consume);	//游戏输了不能再走了
+			status.setText("Player status: Lost");
+		}
 		trapGameStage.close();	//回到迷宫界面
+		root.show();
 	}
 
 
-	private void initCharacter() {
-    	character.setFitWidth(40);
+	private void initCharacter(int characterType) {
+    	character = new ImageView(new Image("file:images/characterPlay/"+characterType+".png"));
+		character.setFitWidth(40);
     	character.setPreserveRatio(true);
     	character.setLayoutX(WIDTH/2 - 20);
     	character.setLayoutY(HEIGHT/2 -20);

@@ -63,7 +63,7 @@ public class GamePane extends BorderPane{
         restart = new Button();
         home = new Button();
 
-        status = new Label("Play status:");
+        status = new Label("Play status: Playing");
         blood = new Label("Blood left: " + mazePane.player.itemList[3]);
 
 		iniTopBar();	//把topBar安置好
@@ -183,11 +183,11 @@ public class GamePane extends BorderPane{
                         trapGameStage.setTitle("Trap Game");
                         trapGameStage.initStyle(StageStyle.UNDECORATED);
                         trapGameStage.setScene(trapGameScene);
-                        trapGamePane.initTrapGame(trapGameStage, blood, mazePane.player.itemList);
+                        trapGamePane.initTrapGame(root, trapGameStage, status, blood, mazePane.player.itemList,characterType);
                         break;
                 }
 
-                if (mazePane.getGhost(mazePane.player.x, mazePane.player.y) != null) {
+                if (mazePane.getGhost(mazePane.player.x, mazePane.player.y) != null && mazePane.player.visible == true) {
                     // 如果遇到了鬼
                     GhostGamePane ghostGamePane = new GhostGamePane();
                     Scene ghostGameScene = new Scene(ghostGamePane);
@@ -198,10 +198,10 @@ public class GamePane extends BorderPane{
                     MazePane.Ghost ghost = mazePane.getGhost(mazePane.player.x, mazePane.player.y);
                     if (ghost.equals(mazePane.ghosts[0])) {
                         System.out.println("this ghost has key");
-                        ghostGamePane.initGhostGame(ghostGameStage, key, blood, mazePane.player.itemList, true);
+                        ghostGamePane.initGhostGame(root, ghostGameStage, key, status, blood, mazePane.player.itemList, true);
                     } else {
                         System.out.println("this ghost does not have key");
-                        ghostGamePane.initGhostGame(ghostGameStage, key, blood, mazePane.player.itemList, false);
+                        ghostGamePane.initGhostGame(root, ghostGameStage, key, status, blood, mazePane.player.itemList, false);
                     }
                     ghost.x = 0;
                     ghost.y = 0;
@@ -211,6 +211,7 @@ public class GamePane extends BorderPane{
 			private void gameWin() {
 				mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y].setCenter(mazePane.characterIcon);
 				status.setText("Player Status: Win");
+				root.addEventFilter(KeyEvent.ANY, KeyEvent::consume); //disable key event
 			}
         };
 
@@ -371,15 +372,21 @@ public class GamePane extends BorderPane{
         });
         
         home.setOnMouseClicked(e->{
-        	HomePane newHomePane = new HomePane(root);
+        	root.close();
+        	Stage newStage = new Stage();
+        	HomePane newHomePane = new HomePane(newStage);
         	Scene newHomeScene = new Scene(newHomePane);
-        	root.setScene(newHomeScene);
+        	newStage.setScene(newHomeScene);
+        	newStage.show();
         });
         
         restart.setOnMouseClicked(e->{
-        	GamePane newGamePane = new GamePane(35,21,characterType,blockType,root);
+        	root.close();
+        	Stage newStage = new Stage();
+        	GamePane newGamePane = new GamePane(35,21,characterType,blockType,newStage);
 			Scene newGameScene = new Scene(newGamePane);
-			root.setScene(newGameScene);
+			newStage.setScene(newGameScene);
+			newStage.show();
 			System.out.println("character choose:" + characterType+ "tile choose:" + blockType);
         });
 
