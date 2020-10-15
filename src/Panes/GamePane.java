@@ -129,6 +129,12 @@ public class GamePane extends BorderPane{
 		
 	}
 
+    public void playWallSound() {
+        Media bs = new Media(new File("music/wall.mp3").toURI().toString());
+        MediaPlayer bsPlayer = new MediaPlayer(bs);
+        bsPlayer.play();
+    }
+
     private void initListener(Stage root, int characterType, int blockType) {
         keyboardListener = new EventHandler<KeyEvent>() {
             @Override
@@ -143,6 +149,8 @@ public class GamePane extends BorderPane{
                         }else if((mazePane.player.x == mazePane.cols-2)&&(mazePane.player.y+1 == mazePane.rows-1)&&mazePane.player.itemList[0]==1) {
                         	mazePane.player.y += 1;
                         	gameWin();
+                        } else if (mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y + 1].status == 0) {
+                            playWallSound();
                         }
                         break;
                     case W:
@@ -153,6 +161,8 @@ public class GamePane extends BorderPane{
                         }else if((mazePane.player.x == mazePane.cols-2)&&(mazePane.player.y-1 == mazePane.rows-1)&&mazePane.player.itemList[0]==1) {
                         	mazePane.player.y -= 1;
                         	gameWin();
+                        } else if (mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y + 1].status == 0) {
+                            playWallSound();
                         }
                         break;
                     case A:
@@ -163,6 +173,8 @@ public class GamePane extends BorderPane{
                         }else if((mazePane.player.x-1 == mazePane.cols-2)&&(mazePane.player.y == mazePane.rows-1)&&mazePane.player.itemList[0]==1) {
                         	mazePane.player.x -= 1;
                         	gameWin();
+                        } else if (mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y + 1].status == 0) {
+                            playWallSound();
                         }
                         break;
                     case D:
@@ -173,6 +185,8 @@ public class GamePane extends BorderPane{
                         }else if((mazePane.player.x+1 == mazePane.cols-2)&&(mazePane.player.y == mazePane.rows-1)&&mazePane.player.itemList[0]==1) {
                         	mazePane.player.x += 1;
                         	gameWin();
+                        } else if (mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y + 1].status == 0) {
+                            playWallSound();
                         }
                         break;
                 }
