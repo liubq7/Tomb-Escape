@@ -68,7 +68,6 @@ public class GhostGamePane extends BorderPane {
 		monsterImg.setDisable(true);
 
 		initLayout();
-		//initGhostGame(ghostGameStage, itemKey, hasKey);
 	}
 
 	public void initGhostGame(Stage root, Stage ghostGameStage, Button key, Label status, Label blood, int[] itemList, boolean hasKey, MediaPlayer lostMediaPlayer) {

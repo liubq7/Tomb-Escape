@@ -68,21 +68,18 @@ public class MazePane extends GridPane{
                             switch (dir) {
                                 case 0:
                                     ghost.x++;
-                                    mazeCreator.maze[ghost.x][ghost.y].setCenter(thisView);
                                     break;
                                 case 1:
                                     ghost.y++;
-                                    mazeCreator.maze[ghost.x][ghost.y].setCenter(thisView);
                                     break;
                                 case 2:
                                     ghost.x--;
-                                    mazeCreator.maze[ghost.x][ghost.y].setCenter(thisView);
                                     break;
                                 case 3:
                                     ghost.y--;
-                                    mazeCreator.maze[ghost.x][ghost.y].setCenter(thisView);
                                     break;
                             }
+                            ghostRefresh(ghost.x, ghost.y, thisView);
                         }
                     });
                 }
@@ -95,7 +92,12 @@ public class MazePane extends GridPane{
 		}
 	}
 
-    public class Ghost{
+    protected void ghostRefresh(int x, int y, ImageView thisView) {
+		mazeCreator.maze[x][y].setCenter(thisView);
+		mazeCreator.maze[x][y].props = 0;
+	}
+
+	public class Ghost{
     	int x,y;	//保存坐标
     	boolean hasKey;	//0代表没有钥匙，1代表有钥匙
     	ImageView ghostView;

@@ -10,6 +10,7 @@ import javafx.util.Duration;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -31,7 +32,7 @@ import javafx.scene.shape.Shape;
 
 public class TrapGamePane extends BorderPane{
 	// TODO: improve ui
-    int WIDTH = 600 ;	//整个pane的长宽
+	int WIDTH = 600 ;	//整个pane的长宽
     int HEIGHT = 600 ;
     int NUM_BULLETS = 5 ;	//子弹数量
     int NUM_HITS = 0;	//被挡下来的次数
@@ -43,7 +44,6 @@ public class TrapGamePane extends BorderPane{
     ImageView character;
     Button startBtn,backBtn;
     HBox btmBar;
-
     
     public TrapGamePane() {
     	this.setPrefWidth(WIDTH);
@@ -52,7 +52,6 @@ public class TrapGamePane extends BorderPane{
     	startBtn = new Button("start");
     	backBtn = new Button("back");
     	btmBar = new HBox();
-
     }
 
 
