@@ -20,7 +20,7 @@ import javafx.beans.value.ObservableValue;
 
 
 public class SettingPane extends VBox{
-	Label settingTitle,characterTitle,hpTitle,proTitle,tileTitle;			
+	Label settingTitle, hpTitle,proTitle;
 	ImageView[] characterImg,tileImg;					
 	Button startBtn;			
 	String[] hpInfo = new String[] {"2 points","2 points","3 points"};

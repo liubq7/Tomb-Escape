@@ -29,6 +29,7 @@ import javafx.scene.shape.Path;
 import javafx.scene.shape.Shape;
 
 public class TrapGamePane extends BorderPane{
+	// TODO: improve ui
     int WIDTH = 600 ;	//整个pane的长宽
     int HEIGHT = 600 ;
     int NUM_BULLETS = 5 ;	//子弹数量

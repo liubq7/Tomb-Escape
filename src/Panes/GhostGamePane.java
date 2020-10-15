@@ -10,6 +10,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -20,11 +21,14 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class GhostGamePane extends BorderPane {
-	Label gameTitle, timeTitle,clickTitle, monsterPic;
+	// TODO: improve ui
+	Label gameTitle, subTitle, timeTitle, clickTitle;
 	Button startBtn, backBtn;
 	ImageView monsterImg;
 	VBox topBar;
@@ -32,22 +36,36 @@ public class GhostGamePane extends BorderPane {
 	int count=0;	//计算点按次
 	int timeLeft = 5;
 	Timer mTimer;
-	/*
-	 * 
-	 */
+
+
 	public GhostGamePane(){
-		this.setPrefSize(300, 300);
-		gameTitle = new Label("Try to click the Ghost as quick as possible!");
-		timeTitle = new Label("5s");
-		clickTitle = new Label("Click times:");
+		this.setPrefSize(400, 350);
+		this.setPadding(new Insets(20, 20, 20, 20));
+
+		gameTitle = new Label("Click the Ghost as quick as possible!");
+		gameTitle.setFont(new Font("Arial", 21));
+
+		subTitle = new Label("Click more than 25 times in 5s or you will lost a blood.");
+		subTitle.setFont(new Font("Arial", 12));
+		subTitle.setPadding(new Insets(5, 0, 20, 0));
+
+		timeTitle = new Label("Time left: 0s");
+		timeTitle.setFont(new Font("Constantia", 20));
+		timeTitle.setTextFill(Color.RED);
+		clickTitle = new Label("Click times: 0");
+		clickTitle.setFont(new Font("Constantia", 20));
+		clickTitle.setTextFill(Color.RED);
+
 		topBar = new VBox();
 		btmBar = new HBox();
 		startBtn = new Button("Start");
 		backBtn = new Button("Back");
+
 		monsterImg = new ImageView(new Image("file:images/ghost.png"));
 		monsterImg.setFitWidth(100);
 		monsterImg.setPreserveRatio(true);
 		monsterImg.setDisable(true);
+
 		initLayout();
 		//initGhostGame(ghostGameStage, itemKey, hasKey);
 	}
@@ -58,7 +76,7 @@ public class GhostGamePane extends BorderPane {
 		ghostGameStage.show();
 		monsterImg.setOnMouseClicked(e->{
 			count++;
-			clickTitle.setText("Click times:" + String.valueOf(count));
+			clickTitle.setText("Click times: " + String.valueOf(count));
 		});
 		//点击返回按钮将会回到原来的界面
 		backBtn.setOnMouseClicked(e->{
@@ -81,7 +99,7 @@ public class GhostGamePane extends BorderPane {
 						mTimer.cancel();
 						mTimer.purge();
 					}else {
-						Platform.runLater(() -> timeTitle.setText("time left: "+String.valueOf(timeLeft)));
+						Platform.runLater(() -> timeTitle.setText("Time left: " + String.valueOf(timeLeft) + "s"));
 					}
 				}
 				
@@ -100,10 +118,12 @@ public class GhostGamePane extends BorderPane {
 			}else {
 				itemList[0] = 0;
 			}
-		}else {
+			gameTitle.setText("YOU WIN");
+		} else {
 			itemList[3]--;
 			blood.setText("Blood left:"+ String.valueOf(itemList[3]));
 			System.out.println("you lost, key owns: "+ itemList[0] + "Blood left: "+ itemList[3]);
+			gameTitle.setText("YOU LOST");
 		}
 
 		key.setText(String.valueOf(itemList[0]));
@@ -116,7 +136,10 @@ public class GhostGamePane extends BorderPane {
 	}
 
 	private void initLayout() {
-		topBar.getChildren().addAll(gameTitle,timeTitle,clickTitle);
+		topBar.getChildren().addAll(gameTitle, subTitle, timeTitle,clickTitle);
+		topBar.setPadding(new Insets(0, 0, 20, 0));
+		topBar.setAlignment(Pos.CENTER);
+
 		btmBar.getChildren().addAll(startBtn);
 		this.setTop(topBar);
 		this.setCenter(monsterImg);
