@@ -13,12 +13,15 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import static Panes.MazePane.CELLSIZE;
 
+import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -27,6 +30,8 @@ public class GamePane extends BorderPane{
     MazePane mazePane;	//中间是一个gridpane
     Button[] btmBarButton;	//btmBar的按钮组件 0-重启 1-钥匙 2-铲子 3- 隐身衣 4-主页
     ImageView[] btmBarImg;	//btmBar里每一个按钮的图
+    Media winMedia,lostMedia;
+    MediaPlayer winMediaPlayer,lostMediaPlayer;
     int cols,rows;
 
     private Button key;
@@ -69,10 +74,18 @@ public class GamePane extends BorderPane{
         initBtmBar();	//把btmBar安置好
         initCenter();	//把中间的mazepane安置好
         initWholePane();	//把整个Pane上的组件摆上去
+        initMediaPlayer();	//把音乐播放器初始化
 
         this.setFocusTraversable(true);
         initListener(root,characterType,blockType);
         this.setOnKeyPressed(keyboardListener);
+	}
+
+	private void initMediaPlayer() {
+		winMedia = new Media(new File("music/win.mp3").toURI().toString());
+		winMediaPlayer = new MediaPlayer(winMedia);
+		lostMedia = new Media(new File("music/lost.mp3").toURI().toString());
+		lostMediaPlayer = new MediaPlayer(lostMedia);
 	}
 
 	private void initCenter() {
@@ -183,7 +196,7 @@ public class GamePane extends BorderPane{
                         trapGameStage.setTitle("Trap Game");
                         trapGameStage.initStyle(StageStyle.UNDECORATED);
                         trapGameStage.setScene(trapGameScene);
-                        trapGamePane.initTrapGame(root, trapGameStage, status, blood, mazePane.player.itemList,characterType);
+                        trapGamePane.initTrapGame(root, trapGameStage, status, blood, mazePane.player.itemList,characterType,lostMediaPlayer);
                         break;
                 }
 
@@ -198,10 +211,10 @@ public class GamePane extends BorderPane{
                     MazePane.Ghost ghost = mazePane.getGhost(mazePane.player.x, mazePane.player.y);
                     if (ghost.equals(mazePane.ghosts[0])) {
                         System.out.println("this ghost has key");
-                        ghostGamePane.initGhostGame(root, ghostGameStage, key, status, blood, mazePane.player.itemList, true);
+                        ghostGamePane.initGhostGame(root, ghostGameStage, key, status, blood, mazePane.player.itemList, true, lostMediaPlayer);
                     } else {
                         System.out.println("this ghost does not have key");
-                        ghostGamePane.initGhostGame(root, ghostGameStage, key, status, blood, mazePane.player.itemList, false);
+                        ghostGamePane.initGhostGame(root, ghostGameStage, key, status, blood, mazePane.player.itemList, false, lostMediaPlayer);
                     }
                     ghost.x = 0;
                     ghost.y = 0;
@@ -211,6 +224,7 @@ public class GamePane extends BorderPane{
             private void gameWin() {
             	mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y].setCenter(mazePane.characterIcon);
             	status.setText("Player Status: Win");
+            	winMediaPlayer.play();
             	root.addEventFilter(KeyEvent.ANY, KeyEvent::consume); //disable key event
             }
         };
@@ -352,12 +366,18 @@ public class GamePane extends BorderPane{
         
         //隐身衣的监听器
         cloak.setOnMouseClicked(e->{
+        	mazePane.player.itemList[2] -= 1;
+        	cloak.setText(String.valueOf(mazePane.player.itemList[2]));
         	mazePane.player.visible = false;
+        	System.out.println("player visible status:" + mazePane.player.visible);
         	Timer timer = new Timer();
         	timer.schedule(new TimerTask() {
 				@Override
 				public void run() {
 					mazePane.player.visible = true;
+					System.out.println("player visible status:" + mazePane.player.visible);
+					timer.cancel();
+					timer.purge();
 				}
         		
         	}, 5000);
@@ -367,13 +387,12 @@ public class GamePane extends BorderPane{
             ft.setCycleCount(5);
             ft.setAutoReverse(true);
             ft.play();
-        	timer.cancel();
-        	timer.purge();
         });
         
         home.setOnMouseClicked(e->{
         	root.close();
         	Stage newStage = new Stage();
+        	newStage.setTitle("Tomb-Escape");
         	HomePane newHomePane = new HomePane(newStage);
         	Scene newHomeScene = new Scene(newHomePane);
         	newStage.setScene(newHomeScene);
@@ -383,6 +402,7 @@ public class GamePane extends BorderPane{
         restart.setOnMouseClicked(e->{
         	root.close();
         	Stage newStage = new Stage();
+        	newStage.setTitle("Tomb-Escape");
         	GamePane newGamePane = new GamePane(35,21,characterType,blockType,newStage);
 			Scene newGameScene = new Scene(newGamePane);
 			newStage.setScene(newGameScene);

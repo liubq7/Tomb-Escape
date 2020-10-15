@@ -10,6 +10,7 @@ import javafx.util.Duration;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -55,7 +56,7 @@ public class TrapGamePane extends BorderPane{
     }
 
 
-    void initTrapGame(Stage root,Stage trapGameStage,Label status, Label blood, int[] itemList, int characterType) {
+    void initTrapGame(Stage root,Stage trapGameStage,Label status, Label blood, int[] itemList, int characterType, MediaPlayer lostMediaPlayer) {
     	
     	root.hide();	//hide the original game scene
     	initCharacter(characterType);	//把character图像位置调整好
@@ -72,12 +73,12 @@ public class TrapGamePane extends BorderPane{
 	    	btmBar.getChildren().add(backBtn);
 		});
 		backBtn.setOnMouseClicked(e->{
-			EndGame(root, trapGameStage, status, blood, itemList);
+			EndGame(root, trapGameStage, status, blood, itemList, lostMediaPlayer);
 		});
 	}
 
 
-	private void EndGame(Stage root, Stage trapGameStage, Label status, Label blood, int[] itemList) {
+	private void EndGame(Stage root, Stage trapGameStage, Label status, Label blood, int[] itemList, MediaPlayer lostMediaPlayer) {
 		
     	if(NUM_HITS < NUM_BULLETS) {
     		itemList[3]--;	//如果接到的子弹数小于设置的子弹数，就会让血-1
@@ -86,6 +87,7 @@ public class TrapGamePane extends BorderPane{
 		System.out.println("bloodLeft:"+ itemList[3]);
 		blood.setText("Blood left: " + itemList[3]);
 		if(itemList[3] == 0) {
+			lostMediaPlayer.play();
 			root.addEventFilter(KeyEvent.ANY, KeyEvent::consume);	//游戏输了不能再走了
 			status.setText("Player status: Lost");
 		}
