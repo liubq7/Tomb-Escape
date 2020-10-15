@@ -97,6 +97,11 @@ public class GhostGamePane extends BorderPane {
 					timeLeft--;
 					if(timeLeft<0) {
 						monsterImg.setDisable(true);
+						if(count>25) {
+							Platform.runLater(()->gameTitle.setText("YOU WIN"));
+						}else {
+							Platform.runLater(()->gameTitle.setText("YOU LOST"));
+						}
 						mTimer.cancel();
 						mTimer.purge();
 					}else {
@@ -116,15 +121,11 @@ public class GhostGamePane extends BorderPane {
 		if(count>25) {
 			if(hasKey) {
 				itemList[0] = 1;
-			}else {
-				itemList[0] = 0;
 			}
-			gameTitle.setText("YOU WIN");
 		} else {
 			itemList[3]--;
 			blood.setText("Blood left:"+ String.valueOf(itemList[3]));
 			System.out.println("you lost, key owns: "+ itemList[0] + "Blood left: "+ itemList[3]);
-			gameTitle.setText("YOU LOST");
 		}
 
 		key.setText(String.valueOf(itemList[0]));
