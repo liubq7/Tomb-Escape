@@ -366,12 +366,18 @@ public class GamePane extends BorderPane{
         
         //隐身衣的监听器
         cloak.setOnMouseClicked(e->{
+        	mazePane.player.itemList[2] -= 1;
+        	cloak.setText(String.valueOf(mazePane.player.itemList[2]));
         	mazePane.player.visible = false;
+        	System.out.println("player visible status:" + mazePane.player.visible);
         	Timer timer = new Timer();
         	timer.schedule(new TimerTask() {
 				@Override
 				public void run() {
 					mazePane.player.visible = true;
+					System.out.println("player visible status:" + mazePane.player.visible);
+					timer.cancel();
+					timer.purge();
 				}
         		
         	}, 5000);
@@ -381,12 +387,9 @@ public class GamePane extends BorderPane{
             ft.setCycleCount(5);
             ft.setAutoReverse(true);
             ft.play();
-        	timer.cancel();
-        	timer.purge();
         });
         
         home.setOnMouseClicked(e->{
-        	this.getChildren().remove(mazePane);
         	root.close();
         	Stage newStage = new Stage();
         	newStage.setTitle("Tomb-Escape");
@@ -397,7 +400,6 @@ public class GamePane extends BorderPane{
         });
         
         restart.setOnMouseClicked(e->{
-        	this.getChildren().remove(mazePane);
         	root.close();
         	Stage newStage = new Stage();
         	newStage.setTitle("Tomb-Escape");
