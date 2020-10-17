@@ -55,6 +55,7 @@ public class TrapGamePane extends BorderPane{
     public TrapGamePane() {
     	this.setPrefWidth(WIDTH);
     	this.setPrefHeight(HEIGHT);
+		this.setPadding(new Insets(20, 20, 20, 20));
     	
     	character = new ImageView();	
     	startBtn = new Button("start");
@@ -72,7 +73,7 @@ public class TrapGamePane extends BorderPane{
 		bulletTitle = new Label("Number of bullets: " + NUM_BULLETS);
 		bulletTitle.setFont(new Font("Constantia", 20));
 		bulletTitle.setTextFill(Color.RED);
-		hitTitle = new Label("Number of hits: " + NUM_HITS);
+		hitTitle = new Label("Number of defend: " + NUM_HITS);
 		hitTitle.setFont(new Font("Constantia", 20));
 		hitTitle.setTextFill(Color.RED);
 		
@@ -188,7 +189,7 @@ public class TrapGamePane extends BorderPane{
                     	//is the bullet hit the shield and the mouse is hovered on the shield, then the bullet will be stopped
                         if (((Path)Shape.intersect(bullet, target)).getElements().size() > 0 && target.isHover()) {
                         	NUM_HITS++;
-                        	Platform.runLater(() -> hitTitle.setText("Number of hits: " + (NUM_HITS)));
+                        	Platform.runLater(() -> hitTitle.setText("Number of defendSSWWW: " + (NUM_HITS)));
                         	System.out.println("Hit!" + "NUM_HITS:"+ NUM_HITS);
                             bulletAnimation.stop();
                             pane.getChildren().remove(bullet);
