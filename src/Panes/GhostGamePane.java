@@ -28,14 +28,13 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class GhostGamePane extends BorderPane {
-	// TODO: improve ui
 	Label gameTitle, subTitle, timeTitle, clickTitle;
 	Button startBtn, backBtn;
 	ImageView monsterImg;
 	VBox topBar;
 	HBox btmBar;
-	int count=0;	//计算点按次
-	int timeLeft = 5;
+	int count=0;	// the count of click times
+	int timeLeft = 5;	//the whole game's time
 	Timer mTimer;
 
 
@@ -65,10 +64,21 @@ public class GhostGamePane extends BorderPane {
 		monsterImg = new ImageView(new Image("file:images/ghost.png"));
 		monsterImg.setFitWidth(100);
 		monsterImg.setPreserveRatio(true);
-		monsterImg.setDisable(true);
+		monsterImg.setDisable(true);	//when initial the ghost image, disable the clicking unless the user click the start button
 
 		initLayout();
 	}
+	/**
+	 * 
+	 * @param root: main game's stage
+	 * @param ghostGameStage: ghost game's stage
+	 * @param key: the key label of the player
+	 * @param status: the status of the player lost/going
+	 * @param blood: the blood label of the player
+	 * @param itemList: itemList[0] indicates the key and itemList[3] indicates the blood
+	 * @param hasKey: whether the ghost has a key
+	 * @param lostMediaPlayer: if player's blood = 0 after this game, play lost music
+	 */
 
 	public void initGhostGame(Stage root, Stage ghostGameStage, Button key, Label status, Label blood, int[] itemList, boolean hasKey, MediaPlayer lostMediaPlayer) {
 		
@@ -78,12 +88,11 @@ public class GhostGamePane extends BorderPane {
 			count++;
 			clickTitle.setText("Click times: " + String.valueOf(count));
 		});
-		//点击返回按钮将会回到原来的界面
 		backBtn.setOnMouseClicked(e->{
 			EndGame(root,ghostGameStage, key, status, blood, itemList, hasKey,lostMediaPlayer);
 		});
 		
-		//按钮点击后中间的小鬼可以点击，并且计算点击次数
+		//after clicking the start btn, the user can click the ghost and start counting click times
 		startBtn.setOnAction(e -> {
 			System.out.println("key owns:"+ itemList[0]);
 			btmBar.getChildren().remove(startBtn);
@@ -114,9 +123,9 @@ public class GhostGamePane extends BorderPane {
 
 	}
 	
-	//打鬼游戏结束，回到原来的scene
+	//ghost game ends and get back to the main game
 	public void EndGame(Stage root, Stage ghostGameStage, Button key, Label status, Label blood, int[] itemList, boolean hasKey, MediaPlayer lostMediaPlayer) {
-		//先判断游戏赢了还是输了,再判断有无钥匙
+		//judge game result. if the ghost has key, player's key + 1
 		if(count>25) {
 			if(hasKey) {
 				itemList[0] = 1;
@@ -143,10 +152,10 @@ public class GhostGamePane extends BorderPane {
 		topBar.setAlignment(Pos.CENTER);
 
 		btmBar.getChildren().addAll(startBtn);
+		btmBar.setAlignment(Pos.CENTER);
 		this.setTop(topBar);
 		this.setCenter(monsterImg);
 		this.setBottom(btmBar);
-		btmBar.setAlignment(Pos.CENTER);
 	}
 
 	
