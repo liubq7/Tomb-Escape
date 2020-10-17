@@ -188,7 +188,7 @@ public class TrapGamePane extends BorderPane {
                         //is the bullet hit the shield and the mouse is hovered on the shield, then the bullet will be stopped
                         if (((Path) Shape.intersect(bullet, target)).getElements().size() > 0 && target.isHover()) {
                             NUM_HITS++;
-                            Platform.runLater(() -> hitTitle.setText("Number of defendDD: " + (NUM_HITS)));
+                            Platform.runLater(() -> hitTitle.setText("Number of defend: " + (NUM_HITS)));
                             System.out.println("Hit!" + "NUM_HITS:" + NUM_HITS);
                             bulletAnimation.stop();
                             pane.getChildren().remove(bullet);
