@@ -11,56 +11,56 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
-public class MazePane extends GridPane{
+public class MazePane extends GridPane {
     public static final int CELLSIZE = 28;
     MazeCreator mazeCreator;
     Player player;
     Ghost[] ghosts;
     Random random;
-    int rows,cols;
+    int rows, cols;
 
     public ImageView characterIcon;
     private ImageView doorView;
 
 
     /**
-     * @param x width
-     * @param y height
+     * @param x             width
+     * @param y             height
      * @param characterType character type player chose in setting
-     * @param blockType block type player chose in setting
+     * @param blockType     block type player chose in setting
      */
     public MazePane(int x, int y, int characterType, int blockType) {
 
-		rows = y;
-		cols = x;
-		mazeCreator = new MazeCreator(x,y);
-		mazeCreator.generateMaze();
-		player = new Player(1,1, characterType);
+        rows = y;
+        cols = x;
+        mazeCreator = new MazeCreator(x, y);
+        mazeCreator.generateMaze();
+        player = new Player(1, 1, characterType);
 
-		/* init 3 ghosts and their start position randomly. */
-		ghosts = new Ghost[3];
-		random = new Random();
-		for(int i=0; i<ghosts.length; i++) {
-			int ghostX = random.nextInt(cols);
-			int ghostY = random.nextInt(rows);
-			while(mazeCreator.maze[ghostX][ghostY].status != 1 || (ghostX == 1 && ghostY == 1)) {
-				ghostX = random.nextInt(cols);
-				ghostY = random.nextInt(rows);
-			}
-			ghosts[i] = new Ghost(ghostX,ghostY,false);
-		}
-		ghosts[0].hasKey = true;
-		
-		initImg();
-		initMazeLayouts(blockType);
-		ghostsMove();
+        /* init 3 ghosts and their start position randomly. */
+        ghosts = new Ghost[3];
+        random = new Random();
+        for (int i = 0; i < ghosts.length; i++) {
+            int ghostX = random.nextInt(cols);
+            int ghostY = random.nextInt(rows);
+            while (mazeCreator.maze[ghostX][ghostY].status != 1 || (ghostX == 1 && ghostY == 1)) {
+                ghostX = random.nextInt(cols);
+                ghostY = random.nextInt(rows);
+            }
+            ghosts[i] = new Ghost(ghostX, ghostY, false);
+        }
+        ghosts[0].hasKey = true;
+
+        initImg();
+        initMazeLayouts(blockType);
+        ghostsMove();
 
         this.setFocusTraversable(true);
-	}
+    }
 
-	/* Ghosts move randomly in the maze's road. */
+    /* Ghosts move randomly in the maze's road. */
     private void ghostsMove() {
-        for(int i=0; i<ghosts.length; i++) {
+        for (int i = 0; i < ghosts.length; i++) {
             Ghost ghost = ghosts[i];
             ImageView thisView = ghosts[i].ghostView;
             Timer timer = new Timer();
@@ -96,27 +96,27 @@ public class MazePane extends GridPane{
                 ghost.y = 0;
                 timer.cancel();
             }
-		}
-	}
+        }
+    }
 
-	/* Refresh the cell when a ghost move to there. */
+    /* Refresh the cell when a ghost move to there. */
     protected void ghostRefresh(int x, int y, ImageView thisView) {
-		mazeCreator.maze[x][y].setCenter(thisView);
-		mazeCreator.maze[x][y].props = 0;
-	}
+        mazeCreator.maze[x][y].setCenter(thisView);
+        mazeCreator.maze[x][y].props = 0;
+    }
 
-	public class Ghost{
-    	int x,y;	// the position of this ghost
-    	boolean hasKey;	// whether the ghost has a key
-    	ImageView ghostView;
-    	
-    	public Ghost(int x, int y, boolean hasKey) {
-    		this.hasKey = hasKey;
-    		this.x = x;
-    		this.y = y;	
-    	}
+    public class Ghost {
+        int x, y;    // the position of this ghost
+        boolean hasKey;    // whether the ghost has a key
+        ImageView ghostView;
 
-    	/* Get all directions can move. */
+        public Ghost(int x, int y, boolean hasKey) {
+            this.hasKey = hasKey;
+            this.x = x;
+            this.y = y;
+        }
+
+        /* Get all directions can move. */
         private ArrayList<Integer> checkDir() {
             ArrayList<Integer> dirList = new ArrayList<>();
             if (x + 1 < cols && (mazeCreator.maze[x + 1][y]).status == 1 && !(x + 1 == player.x && y == player.y)) {
@@ -134,6 +134,7 @@ public class MazePane extends GridPane{
             return dirList;
         }
     }
+
     /* Get the ghost at the location by coordinates, return null if there is no ghost at the location. */
     public Ghost getGhost(int x, int y) {
         for (int i = 0; i < ghosts.length; i++) {
@@ -145,11 +146,10 @@ public class MazePane extends GridPane{
     }
 
 
-
     public class Player {
-        int x,y;  // the position of the player
+        int x, y;  // the position of the player
         private int characterType;
-        int[] itemList = {0, 0, 0, 2};	// the number of prop he has. [0]key, [1]shovel, [2]cloak, [3]blood(init 2)
+        int[] itemList = {0, 0, 0, 2};    // the number of prop he has. [0]key, [1]shovel, [2]cloak, [3]blood(init 2)
         boolean visible = true;  // whether the player is visible by the ghost.
 
         private Player(int x, int y, int characterType) {
@@ -190,7 +190,7 @@ public class MazePane extends GridPane{
                 return 0;
             }
         }
-        
+
     }
 
     private void initMazeLayouts(int blockType) {
@@ -199,15 +199,15 @@ public class MazePane extends GridPane{
 
         for (int j = 0; j < rows; j++) {
             for (int i = 0; i < cols; i++) {
-            	System.out.print(mazeCreator.maze[i][j].status + " ");
+                System.out.print(mazeCreator.maze[i][j].status + " ");
                 mazeCreator.maze[i][j].setView(blockType);
-				this.add(mazeCreator.maze[i][j], i, j);
+                this.add(mazeCreator.maze[i][j], i, j);
             }
             System.out.println();
         }
 
-        for(int i=0; i<ghosts.length; i++) {
-        	this.mazeCreator.maze[ghosts[i].x][ghosts[i].y].setCenter(ghosts[i].ghostView);
+        for (int i = 0; i < ghosts.length; i++) {
+            this.mazeCreator.maze[ghosts[i].x][ghosts[i].y].setCenter(ghosts[i].ghostView);
         }
 
         this.mazeCreator.maze[player.x][player.y].setCenter(characterIcon);  // set the init player's position (1,1)
@@ -233,11 +233,11 @@ public class MazePane extends GridPane{
         doorView = new ImageView(new Image("file:images/door.png"));
         doorView.setFitHeight(CELLSIZE - 1);
         doorView.setPreserveRatio(true);
-        
-        for(int i=0; i<ghosts.length; i++) {
-        	ghosts[i].ghostView = new ImageView(new Image("file:images/ghost.png"));
-        	ghosts[i].ghostView.setFitHeight(CELLSIZE - 1);
-        	ghosts[i].ghostView.setPreserveRatio(true);
+
+        for (int i = 0; i < ghosts.length; i++) {
+            ghosts[i].ghostView = new ImageView(new Image("file:images/ghost.png"));
+            ghosts[i].ghostView.setFitHeight(CELLSIZE - 1);
+            ghosts[i].ghostView.setPreserveRatio(true);
         }
     }
 

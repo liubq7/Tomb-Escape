@@ -26,14 +26,14 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /* The main game page. */
-public class GamePane extends BorderPane{
-    HBox topBar,btmBar;
+public class GamePane extends BorderPane {
+    HBox topBar, btmBar;
     MazePane mazePane;
-    Button[] btmBarButton;	// buttons on btmBar, 0: restart, 1: key, 2: shovel, 3: invisible cloak, 4: homepage
-    ImageView[] btmBarImg;	// the images of buttons on btmBar
-    Media winMedia,lostMedia;
-    MediaPlayer winMediaPlayer,lostMediaPlayer;
-    int cols,rows;
+    Button[] btmBarButton;    // buttons on btmBar, 0: restart, 1: key, 2: shovel, 3: invisible cloak, 4: homepage
+    ImageView[] btmBarImg;    // the images of buttons on btmBar
+    Media winMedia, lostMedia;
+    MediaPlayer winMediaPlayer, lostMediaPlayer;
+    int cols, rows;
 
     private Button key;
     private Button shovel;
@@ -53,11 +53,11 @@ public class GamePane extends BorderPane{
     private EventHandler<DragEvent> dragDoneListener;
 
     /**
-     * @param x width
-     * @param y height
+     * @param x             width
+     * @param y             height
      * @param characterType character type player chose in setting
-     * @param blockType block type player chose in setting
-     * @param root the stage has this gamepane
+     * @param blockType     block type player chose in setting
+     * @param root          the stage has this gamepane
      */
     public GamePane(int x, int y, int characterType, int blockType, Stage root) {
         cols = x;
@@ -84,26 +84,26 @@ public class GamePane extends BorderPane{
         initMediaPlayer();
 
         this.setFocusTraversable(true);
-        initListener(root,characterType,blockType);
+        initListener(root, characterType, blockType);
         this.setOnKeyPressed(keyboardListener);
-	}
+    }
 
-	private void initMediaPlayer() {
-		winMedia = new Media(new File("music/win.mp3").toURI().toString());
-		winMediaPlayer = new MediaPlayer(winMedia);
-		lostMedia = new Media(new File("music/lost.mp3").toURI().toString());
-		lostMediaPlayer = new MediaPlayer(lostMedia);
-	}
+    private void initMediaPlayer() {
+        winMedia = new Media(new File("music/win.mp3").toURI().toString());
+        winMediaPlayer = new MediaPlayer(winMedia);
+        lostMedia = new Media(new File("music/lost.mp3").toURI().toString());
+        lostMediaPlayer = new MediaPlayer(lostMedia);
+    }
 
-	private void initCenter() {
+    private void initCenter() {
         mazePane.setAlignment(Pos.CENTER);
-	}
+    }
 
-	private void initWholePane() {
+    private void initWholePane() {
         this.setTop(topBar);
         this.setCenter(mazePane);
         this.setBottom(btmBar);
-	}
+    }
 
     private void initBtmBar() {
         btmBarButton[0] = restart;
@@ -112,29 +112,29 @@ public class GamePane extends BorderPane{
         btmBarButton[3] = cloak;
         btmBarButton[4] = home;
 
-        for(int i = 0; i < btmBarButton.length; i++) {
-			btmBarImg[i] = new ImageView(new Image("file:images/btmBarImg/" + String.valueOf(i) + ".png"));
-			btmBarImg[i].setFitHeight(30);
-			btmBarImg[i].setPreserveRatio(true);
-			btmBarButton[i].setGraphic(btmBarImg[i]);
-			btmBarButton[i].setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
-			if(i >= 1 && i <= 3) {
-				btmBarButton[i].setText(Integer.toString(mazePane.player.itemList[i - 1]));
-			}
-			btmBar.getChildren().add(btmBarButton[i]);
-		}
-		btmBar.setAlignment(Pos.CENTER);
-		btmBar.setPadding(new Insets(10,10,10,10));
-		btmBar.setSpacing(10);
-	}
+        for (int i = 0; i < btmBarButton.length; i++) {
+            btmBarImg[i] = new ImageView(new Image("file:images/btmBarImg/" + String.valueOf(i) + ".png"));
+            btmBarImg[i].setFitHeight(30);
+            btmBarImg[i].setPreserveRatio(true);
+            btmBarButton[i].setGraphic(btmBarImg[i]);
+            btmBarButton[i].setStyle("-fx-background-color: transparent; -fx-border-color: transparent;");
+            if (i >= 1 && i <= 3) {
+                btmBarButton[i].setText(Integer.toString(mazePane.player.itemList[i - 1]));
+            }
+            btmBar.getChildren().add(btmBarButton[i]);
+        }
+        btmBar.setAlignment(Pos.CENTER);
+        btmBar.setPadding(new Insets(10, 10, 10, 10));
+        btmBar.setSpacing(10);
+    }
 
     private void iniTopBar() {
         topBar.getChildren().addAll(status, blood);
-		topBar.setPadding(new Insets(10,10,10,10));
-		topBar.setSpacing(50);
-		topBar.setAlignment(Pos.CENTER);
-		
-	}
+        topBar.setPadding(new Insets(10, 10, 10, 10));
+        topBar.setSpacing(50);
+        topBar.setAlignment(Pos.CENTER);
+
+    }
 
     public void playWallSound() {
         Media bs = new Media(new File("music/wall.mp3").toURI().toString());
@@ -154,11 +154,11 @@ public class GamePane extends BorderPane{
                             // there's road, can move
                             mazePane.player.y += 1;
                             mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y].setCenter(mazePane.characterIcon);
-                        } else if((mazePane.player.x == mazePane.cols-2) &&
-                                (mazePane.player.y+1 == mazePane.rows-1) && mazePane.player.itemList[0]==1) {
+                        } else if ((mazePane.player.x == mazePane.cols - 2) &&
+                                (mazePane.player.y + 1 == mazePane.rows - 1) && mazePane.player.itemList[0] == 1) {
                             // to the exit, if has key, game win
-                        	mazePane.player.y += 1;
-                        	gameWin();
+                            mazePane.player.y += 1;
+                            gameWin();
                         } else if (mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y + 1].status == 0) {
                             // there's wall, can't move and play remind sound
                             playWallSound();
@@ -169,11 +169,11 @@ public class GamePane extends BorderPane{
                         if (mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y - 1].status != 0) {
                             mazePane.player.y -= 1;
                             mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y].setCenter(mazePane.characterIcon);
-                        }else if((mazePane.player.x == mazePane.cols-2) &&
-                                (mazePane.player.y-1 == mazePane.rows-1) &&
-                                mazePane.player.itemList[0]==1) {
-                        	mazePane.player.y -= 1;
-                        	gameWin();
+                        } else if ((mazePane.player.x == mazePane.cols - 2) &&
+                                (mazePane.player.y - 1 == mazePane.rows - 1) &&
+                                mazePane.player.itemList[0] == 1) {
+                            mazePane.player.y -= 1;
+                            gameWin();
                         } else if (mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y + 1].status == 0) {
                             playWallSound();
                         }
@@ -183,11 +183,11 @@ public class GamePane extends BorderPane{
                         if (mazePane.mazeCreator.maze[mazePane.player.x - 1][mazePane.player.y].status != 0) {
                             mazePane.player.x -= 1;
                             mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y].setCenter(mazePane.characterIcon);
-                        }else if((mazePane.player.x-1 == mazePane.cols-2) &&
-                                (mazePane.player.y == mazePane.rows-1) &&
-                                mazePane.player.itemList[0]==1) {
-                        	mazePane.player.x -= 1;
-                        	gameWin();
+                        } else if ((mazePane.player.x - 1 == mazePane.cols - 2) &&
+                                (mazePane.player.y == mazePane.rows - 1) &&
+                                mazePane.player.itemList[0] == 1) {
+                            mazePane.player.x -= 1;
+                            gameWin();
                         } else if (mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y + 1].status == 0) {
                             playWallSound();
                         }
@@ -197,11 +197,11 @@ public class GamePane extends BorderPane{
                         if (mazePane.mazeCreator.maze[mazePane.player.x + 1][mazePane.player.y].status != 0) {
                             mazePane.player.x += 1;
                             mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y].setCenter(mazePane.characterIcon);
-                        }else if((mazePane.player.x+1 == mazePane.cols-2) &&
-                                (mazePane.player.y == mazePane.rows-1) &&
-                                mazePane.player.itemList[0]==1) {
-                        	mazePane.player.x += 1;
-                        	gameWin();
+                        } else if ((mazePane.player.x + 1 == mazePane.cols - 2) &&
+                                (mazePane.player.y == mazePane.rows - 1) &&
+                                mazePane.player.itemList[0] == 1) {
+                            mazePane.player.x += 1;
+                            gameWin();
                         } else if (mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y + 1].status == 0) {
                             playWallSound();
                         }
@@ -254,10 +254,10 @@ public class GamePane extends BorderPane{
             }
 
             private void gameWin() {
-            	mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y].setCenter(mazePane.characterIcon);
-            	status.setText("Player Status: Win");
-            	winMediaPlayer.play();
-            	root.addEventFilter(KeyEvent.ANY, KeyEvent::consume); // disable key event
+                mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y].setCenter(mazePane.characterIcon);
+                status.setText("Player Status: Win");
+                winMediaPlayer.play();
+                root.addEventFilter(KeyEvent.ANY, KeyEvent::consume); // disable key event
             }
         };
 
@@ -335,7 +335,8 @@ public class GamePane extends BorderPane{
                 Cell target = (Cell) event.getSource();
 
                 if (!event.getDragboard().getString().equals("0") && target.status == 0) {
-                    ImageView BlockView = new ImageView();;
+                    ImageView BlockView = new ImageView();
+                    ;
                     switch (target.blockType) {
                         case 0:
                             BlockView = new ImageView(new Image("file:images/tileChoose/0.png"));
@@ -409,24 +410,24 @@ public class GamePane extends BorderPane{
                 }
             }
         }
-        
 
-        cloak.setOnMouseClicked(e->{
-        	mazePane.player.itemList[2] -= 1;
-        	cloak.setText(String.valueOf(mazePane.player.itemList[2]));
-        	mazePane.player.visible = false;
-        	System.out.println("player visible status:" + mazePane.player.visible);
-        	Timer timer = new Timer();
-        	timer.schedule(new TimerTask() {
-				@Override
-				public void run() {
-					mazePane.player.visible = true;
-					System.out.println("player visible status:" + mazePane.player.visible);
-					timer.cancel();
-					timer.purge();
-				}
-        		
-        	}, 5000);
+
+        cloak.setOnMouseClicked(e -> {
+            mazePane.player.itemList[2] -= 1;
+            cloak.setText(String.valueOf(mazePane.player.itemList[2]));
+            mazePane.player.visible = false;
+            System.out.println("player visible status:" + mazePane.player.visible);
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    mazePane.player.visible = true;
+                    System.out.println("player visible status:" + mazePane.player.visible);
+                    timer.cancel();
+                    timer.purge();
+                }
+
+            }, 5000);
             FadeTransition ft = new FadeTransition(Duration.seconds(1), mazePane.characterIcon);
             ft.setFromValue(0.1);
             ft.setToValue(1.0);
@@ -434,28 +435,27 @@ public class GamePane extends BorderPane{
             ft.setAutoReverse(true);
             ft.play();
         });
-        
-        home.setOnMouseClicked(e->{
-        	root.close();
-        	Stage newStage = new Stage();
-        	newStage.setTitle("Tomb-Escape");
-        	HomePane newHomePane = new HomePane(newStage);
-        	Scene newHomeScene = new Scene(newHomePane);
-        	newStage.setScene(newHomeScene);
-        	newStage.show();
-        });
-        
-        restart.setOnMouseClicked(e->{
-        	root.close();
-        	Stage newStage = new Stage();
-        	newStage.setTitle("Tomb-Escape");
-        	GamePane newGamePane = new GamePane(35,21,characterType,blockType,newStage);
-			Scene newGameScene = new Scene(newGamePane);
-			newStage.setScene(newGameScene);
-			newStage.show();
-			System.out.println("character choose:" + characterType+ "tile choose:" + blockType);
+
+        home.setOnMouseClicked(e -> {
+            root.close();
+            Stage newStage = new Stage();
+            newStage.setTitle("Tomb-Escape");
+            HomePane newHomePane = new HomePane(newStage);
+            Scene newHomeScene = new Scene(newHomePane);
+            newStage.setScene(newHomeScene);
+            newStage.show();
         });
 
+        restart.setOnMouseClicked(e -> {
+            root.close();
+            Stage newStage = new Stage();
+            newStage.setTitle("Tomb-Escape");
+            GamePane newGamePane = new GamePane(35, 21, characterType, blockType, newStage);
+            Scene newGameScene = new Scene(newGamePane);
+            newStage.setScene(newGameScene);
+            newStage.show();
+            System.out.println("character choose:" + characterType + "tile choose:" + blockType);
+        });
 
 
     }
