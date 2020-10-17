@@ -9,6 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
+/* The start home page. */
 public class HomePane extends BorderPane {
 
 	ImageView gameLogo;		

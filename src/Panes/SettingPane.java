@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
-
+/* The setting page. */
 public class SettingPane extends VBox{
 	Label settingTitle, hpTitle,proTitle;
 	ImageView[] characterImg,tileImg;					
@@ -26,9 +26,9 @@ public class SettingPane extends VBox{
 	String[] hpInfo = new String[] {"2 points","2 points","3 points"};
 	String[] proInfo = new String[] {"1 spade","1 invisible coak","1 more blood"};
 	HBox characterBox,tileBox;
-	ToggleGroup characterGroup,tileGroup;	//单选按钮组
-	RadioButton[] characterBtn,tileBtn;		//单选按钮数组
-	int characterPick,tilePick;	//用来保存最终用户选择了哪一个角色/哪一种墙背景 然后传递给mazepane
+	ToggleGroup characterGroup,tileGroup;
+	RadioButton[] characterBtn,tileBtn;
+	int characterPick,tilePick;  // to store the characterType and blockType the user selected, then pass them to mazepane
 
 
 	public SettingPane(Stage root) {
@@ -52,9 +52,9 @@ public class SettingPane extends VBox{
 
 		startBtn = new Button("Start");
 		
-		initImgBtn();	//把每个单选按钮加到对应的Toggle Group 里并且加上图片
-		initListener(root);	//把每个单选按钮的事件注册
-		initLayout();	//把这个Pane的摆放规整
+		initImgBtn();
+		initListener(root);
+		initLayout();
 	}
 
 	private void initLayout() {
@@ -70,7 +70,6 @@ public class SettingPane extends VBox{
 	}
 
 	private void initListener(Stage root) {
-		//如果那个单选按钮被选中，对应的characterPick, tilePick 就等于 0/1/2, 同时更新hp和pro栏的文字
 		characterGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
 		    public void changed(ObservableValue<? extends Toggle> ov,
 		        Toggle old_toggle, Toggle new_toggle) {
@@ -108,7 +107,7 @@ public class SettingPane extends VBox{
 			characterBtn[i].setGraphic(characterImg[i]);
 			characterBtn[i].setPadding(new Insets(10, 10, 5, 10));
 			characterBtn[i].setToggleGroup(characterGroup);
-			characterBtn[i].setUserData(String.valueOf(i));	//保留数据用于选中时分析 0-战士 1-牧师 2-卫士
+			characterBtn[i].setUserData(String.valueOf(i));  // 0: warrior, 1: priest, 2: defender
 			
 			tileImg[i] = new ImageView(new Image("file:images/tileChoose/"+ String.valueOf(i)+".png"));
 			tileImg[i].setFitHeight(80);

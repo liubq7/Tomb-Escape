@@ -4,19 +4,20 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
- * 使用递归回溯(Recursive backtracker)算法生成迷宫
+ * Use Recursive Backtracker algorithm to generate maze.
+ * Also generate properties randomly.
  */
 public class MazeCreator {
-    private int col;  // 列（长）x，需为奇数
-    private int row;  // 行（宽）y，需为奇数
+    private int col;  // width, needs to be odd number
+    private int row;  // height, needs to be odd number
     public Cell[][] maze;
     private LinkedList<Cell> recurseList;
-    private LinkedList<Cell> availableList;
+    private LinkedList<Cell> availableList;  // road cells which haven't been marked
 
-    private int shovelNum;
-    private int bloodBagNum;
-    private int cloakNum;
-    private int trapNum;
+    private int shovelNum;  // the number of cell which has shovel
+    private int bloodBagNum;  // the number of cell which has blood bag
+    private int cloakNum;  // the number of cell which has invisible cloak
+    private int trapNum;  // the number of cell which has trap
 
     public ArrayList<Cell> shovelList;
     public ArrayList<Cell> bloodBagList;
@@ -38,7 +39,7 @@ public class MazeCreator {
 
     }
 
-    // 生成0，1间隔的基础地图
+    /* Generate a base map with 0, 1 interval. */
     private void initMaze() {
         for (int i = 0; i < col; i++) {
             for (int j = 0; j < row; j++) {
@@ -53,7 +54,7 @@ public class MazeCreator {
         }
     }
 
-    // 随机选择一个1为起始点
+    /* Randomly choose a 1 as the starting point. */
     private Cell randomStart() {
         int i = 1 + 2 * (int) (Math.random() * (col-1) / 2);
         int j = 1 + 2 * (int) (Math.random() * (row-1) / 2);
@@ -62,7 +63,7 @@ public class MazeCreator {
         return maze[i][j];
     }
 
-    // 判断一个坐标是否在此maze中
+    /* Determine whether a coordinate is in this maze. */
     private boolean isContain(int x, int y) {
         if (x >= 0 && x < col && y >= 0 && y < row) {
             return true;
@@ -71,7 +72,7 @@ public class MazeCreator {
         }
     }
 
-    // 获取start点周围没有被mark过的全部的1
+    /* Get all 1s that have not been marked around the start point. */
     private ArrayList<Cell> getAround(Cell start) {
         ArrayList<Cell> around = new ArrayList<>();
         if (isContain(start.x, start.y-2) && availableList.contains(maze[start.x][start.y-2])) {
@@ -89,7 +90,11 @@ public class MazeCreator {
         return around;
     }
 
-    // 获取start点周围随机的没被mark过的1，若没有则返回null
+    /**
+     * Randomly get an unmarked 1 around the start point
+     * @param start start point
+     * @return a random unmarked 1 around the start point, if no, return null
+     */
     private Cell getEnd(Cell start) {
         ArrayList<Cell> around = getAround(start);
         int n = around.size();
@@ -101,7 +106,7 @@ public class MazeCreator {
         }
     }
 
-    // 将start与end之间打通，并把end添加进roadList，
+    /* Connect road between start and end, and add end to recurseList to be the next start. */
     private void generatePath(Cell start, Cell end) {
         int midX = (start.x + end.x) / 2;
         int midY = (start.y + end.y) / 2;
@@ -110,6 +115,7 @@ public class MazeCreator {
         availableList.remove(end);
     }
 
+    /* Generate maze and properties randomly. */
     public void generateMaze() {
         initMaze();
         Cell start = randomStart();

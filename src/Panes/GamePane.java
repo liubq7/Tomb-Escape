@@ -25,11 +25,12 @@ import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/* The main game page. */
 public class GamePane extends BorderPane{
-    HBox topBar,btmBar;	//上下分别用两个HBOX放组件
-    MazePane mazePane;	//中间是一个gridpane
-    Button[] btmBarButton;	//btmBar的按钮组件 0-重启 1-钥匙 2-铲子 3- 隐身衣 4-主页
-    ImageView[] btmBarImg;	//btmBar里每一个按钮的图
+    HBox topBar,btmBar;
+    MazePane mazePane;
+    Button[] btmBarButton;	// buttons on btmBar, 0: restart, 1: key, 2: shovel, 3: invisible cloak, 4: homepage
+    ImageView[] btmBarImg;	// the images of buttons on btmBar
     Media winMedia,lostMedia;
     MediaPlayer winMediaPlayer,lostMediaPlayer;
     int cols,rows;
@@ -40,8 +41,8 @@ public class GamePane extends BorderPane{
     Button restart;
     Button home;
 
-    private Label status;
-    private Label blood;
+    private Label status;  // show the game status
+    private Label blood;  // show the blood left
 
     private EventHandler<KeyEvent> keyboardListener;
     private EventHandler<MouseEvent> dragDetector;
@@ -51,7 +52,13 @@ public class GamePane extends BorderPane{
     private EventHandler<DragEvent> dragDropper;
     private EventHandler<DragEvent> dragDoneListener;
 
-	
+    /**
+     * @param x width
+     * @param y height
+     * @param characterType character type player chose in setting
+     * @param blockType block type player chose in setting
+     * @param root the stage has this gamepane
+     */
     public GamePane(int x, int y, int characterType, int blockType, Stage root) {
         cols = x;
         rows = y;
@@ -70,11 +77,11 @@ public class GamePane extends BorderPane{
         status = new Label("Play status: Playing");
         blood = new Label("Blood left: " + mazePane.player.itemList[3]);
 
-        iniTopBar();	//把topBar安置好
-        initBtmBar();	//把btmBar安置好
-        initCenter();	//把中间的mazepane安置好
-        initWholePane();	//把整个Pane上的组件摆上去
-        initMediaPlayer();	//把音乐播放器初始化
+        iniTopBar();
+        initBtmBar();
+        initCenter();
+        initWholePane();
+        initMediaPlayer();
 
         this.setFocusTraversable(true);
         initListener(root,characterType,blockType);
@@ -136,20 +143,24 @@ public class GamePane extends BorderPane{
     }
 
     private void initListener(Stage root, int characterType, int blockType) {
+
         keyboardListener = new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
-                // TODO: 不能走的地方给予声音提示？
                 switch (keyEvent.getCode()) {
                     case S:
                         System.out.println("S");
                         if (mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y + 1].status != 0) {
+                            // there's road, can move
                             mazePane.player.y += 1;
                             mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y].setCenter(mazePane.characterIcon);
-                        }else if((mazePane.player.x == mazePane.cols-2)&&(mazePane.player.y+1 == mazePane.rows-1)&&mazePane.player.itemList[0]==1) {
+                        } else if((mazePane.player.x == mazePane.cols-2) &&
+                                (mazePane.player.y+1 == mazePane.rows-1) && mazePane.player.itemList[0]==1) {
+                            // to the exit, if has key, game win
                         	mazePane.player.y += 1;
                         	gameWin();
                         } else if (mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y + 1].status == 0) {
+                            // there's wall, can't move and play remind sound
                             playWallSound();
                         }
                         break;
@@ -158,7 +169,9 @@ public class GamePane extends BorderPane{
                         if (mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y - 1].status != 0) {
                             mazePane.player.y -= 1;
                             mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y].setCenter(mazePane.characterIcon);
-                        }else if((mazePane.player.x == mazePane.cols-2)&&(mazePane.player.y-1 == mazePane.rows-1)&&mazePane.player.itemList[0]==1) {
+                        }else if((mazePane.player.x == mazePane.cols-2) &&
+                                (mazePane.player.y-1 == mazePane.rows-1) &&
+                                mazePane.player.itemList[0]==1) {
                         	mazePane.player.y -= 1;
                         	gameWin();
                         } else if (mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y + 1].status == 0) {
@@ -170,7 +183,9 @@ public class GamePane extends BorderPane{
                         if (mazePane.mazeCreator.maze[mazePane.player.x - 1][mazePane.player.y].status != 0) {
                             mazePane.player.x -= 1;
                             mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y].setCenter(mazePane.characterIcon);
-                        }else if((mazePane.player.x-1 == mazePane.cols-2)&&(mazePane.player.y == mazePane.rows-1)&&mazePane.player.itemList[0]==1) {
+                        }else if((mazePane.player.x-1 == mazePane.cols-2) &&
+                                (mazePane.player.y == mazePane.rows-1) &&
+                                mazePane.player.itemList[0]==1) {
                         	mazePane.player.x -= 1;
                         	gameWin();
                         } else if (mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y + 1].status == 0) {
@@ -182,7 +197,9 @@ public class GamePane extends BorderPane{
                         if (mazePane.mazeCreator.maze[mazePane.player.x + 1][mazePane.player.y].status != 0) {
                             mazePane.player.x += 1;
                             mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y].setCenter(mazePane.characterIcon);
-                        }else if((mazePane.player.x+1 == mazePane.cols-2)&&(mazePane.player.y == mazePane.rows-1)&&mazePane.player.itemList[0]==1) {
+                        }else if((mazePane.player.x+1 == mazePane.cols-2) &&
+                                (mazePane.player.y == mazePane.rows-1) &&
+                                mazePane.player.itemList[0]==1) {
                         	mazePane.player.x += 1;
                         	gameWin();
                         } else if (mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y + 1].status == 0) {
@@ -191,6 +208,7 @@ public class GamePane extends BorderPane{
                         break;
                 }
 
+                /* If there's property, get the property and change corresponding label. */
                 int propType = mazePane.player.getProp();
                 switch (propType) {
                     case 1:
@@ -210,12 +228,12 @@ public class GamePane extends BorderPane{
                         trapGameStage.setTitle("Trap Game");
                         trapGameStage.initStyle(StageStyle.UNDECORATED);
                         trapGameStage.setScene(trapGameScene);
-                        trapGamePane.initTrapGame(root, trapGameStage, status, blood, mazePane.player.itemList,characterType,lostMediaPlayer);
+                        trapGamePane.initTrapGame(root, trapGameStage, status, blood, mazePane.player.itemList, characterType, lostMediaPlayer);
                         break;
                 }
 
+                /* If meet a ghost, start the ghost game and remove the ghost. */
                 if (mazePane.getGhost(mazePane.player.x, mazePane.player.y) != null && mazePane.player.visible == true) {
-                    // 如果遇到了鬼
                     GhostGamePane ghostGamePane = new GhostGamePane();
                     Scene ghostGameScene = new Scene(ghostGamePane);
                     Stage ghostGameStage = new Stage();
@@ -239,9 +257,10 @@ public class GamePane extends BorderPane{
             	mazePane.mazeCreator.maze[mazePane.player.x][mazePane.player.y].setCenter(mazePane.characterIcon);
             	status.setText("Player Status: Win");
             	winMediaPlayer.play();
-            	root.addEventFilter(KeyEvent.ANY, KeyEvent::consume); //disable key event
+            	root.addEventFilter(KeyEvent.ANY, KeyEvent::consume); // disable key event
             }
         };
+
 
         dragDetector = new EventHandler<MouseEvent>() {
             @Override
@@ -288,6 +307,7 @@ public class GamePane extends BorderPane{
                 if (!event.getDragboard().getString().equals("0") && target.status == 0) {
                     ImageView noBlockView = new ImageView();
                     switch (target.blockType) {
+                        // put a cross on the wall
                         case 0:
                             noBlockView = new ImageView(new Image("file:images/tileChoose/no0.png"));
                             break;
@@ -346,6 +366,7 @@ public class GamePane extends BorderPane{
                 Dragboard db = event.getDragboard();
                 boolean success = false;
                 if (!db.getString().equals("0") && target.status == 0) {
+                    // set this wall to road
                     target.status = 1;
                     target.setCenter(null);
 
@@ -377,8 +398,19 @@ public class GamePane extends BorderPane{
 
         shovel.setOnDragDetected(dragDetector);
         shovel.setOnDragDone(dragDoneListener);
+
+        for (int i = 0; i < mazePane.cols; i++) {
+            for (int j = 0; j < mazePane.rows; j++) {
+                if (mazePane.mazeCreator.maze[i][j].status == 0) {
+                    mazePane.mazeCreator.maze[i][j].setOnDragOver(dragOverListener);
+                    mazePane.mazeCreator.maze[i][j].setOnDragEntered(dragEnterListener);
+                    mazePane.mazeCreator.maze[i][j].setOnDragExited(dragExitListener);
+                    mazePane.mazeCreator.maze[i][j].setOnDragDropped(dragDropper);
+                }
+            }
+        }
         
-        //隐身衣的监听器
+
         cloak.setOnMouseClicked(e->{
         	mazePane.player.itemList[2] -= 1;
         	cloak.setText(String.valueOf(mazePane.player.itemList[2]));
@@ -424,16 +456,7 @@ public class GamePane extends BorderPane{
 			System.out.println("character choose:" + characterType+ "tile choose:" + blockType);
         });
 
-        for (int i = 0; i < mazePane.cols; i++) {
-            for (int j = 0; j < mazePane.rows; j++) {
-                if (mazePane.mazeCreator.maze[i][j].status == 0) {
-                    mazePane.mazeCreator.maze[i][j].setOnDragOver(dragOverListener);
-                    mazePane.mazeCreator.maze[i][j].setOnDragEntered(dragEnterListener);
-                    mazePane.mazeCreator.maze[i][j].setOnDragExited(dragExitListener);
-                    mazePane.mazeCreator.maze[i][j].setOnDragDropped(dragDropper);
-                }
-            }
-        }
+
 
     }
 }

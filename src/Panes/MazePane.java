@@ -17,21 +17,27 @@ public class MazePane extends GridPane{
     Player player;
     Ghost[] ghosts;
     Random random;
-    int rows,cols;	//行列数
+    int rows,cols;
 
     public ImageView characterIcon;
     private ImageView doorView;
 
 
-	
+    /**
+     * @param x width
+     * @param y height
+     * @param characterType character type player chose in setting
+     * @param blockType block type player chose in setting
+     */
     public MazePane(int x, int y, int characterType, int blockType) {
-//        this.setPadding(new Insets(0, 10, 0, 10));
+
 		rows = y;
 		cols = x;
 		mazeCreator = new MazeCreator(x,y);
-		mazeCreator.generateMaze();	//迷宫二维数组确定，不然没办法随机生成鬼的位置
+		mazeCreator.generateMaze();
 		player = new Player(1,1, characterType);
 
+		/* init 3 ghosts and their start position randomly. */
 		ghosts = new Ghost[3];
 		random = new Random();
 		for(int i=0; i<ghosts.length; i++) {
@@ -43,7 +49,7 @@ public class MazePane extends GridPane{
 			}
 			ghosts[i] = new Ghost(ghostX,ghostY,false);
 		}
-		ghosts[0].hasKey = true;	//鬼0身上有钥匙
+		ghosts[0].hasKey = true;
 		
 		initImg();
 		initMazeLayouts(blockType);
@@ -52,6 +58,7 @@ public class MazePane extends GridPane{
         this.setFocusTraversable(true);
 	}
 
+	/* Ghosts move randomly in the maze's road. */
     private void ghostsMove() {
         for(int i=0; i<ghosts.length; i++) {
             Ghost ghost = ghosts[i];
@@ -92,14 +99,15 @@ public class MazePane extends GridPane{
 		}
 	}
 
+	/* Refresh the cell when a ghost move to there. */
     protected void ghostRefresh(int x, int y, ImageView thisView) {
 		mazeCreator.maze[x][y].setCenter(thisView);
 		mazeCreator.maze[x][y].props = 0;
 	}
 
 	public class Ghost{
-    	int x,y;	//保存坐标
-    	boolean hasKey;	//0代表没有钥匙，1代表有钥匙
+    	int x,y;	// the position of this ghost
+    	boolean hasKey;	// whether the ghost has a key
     	ImageView ghostView;
     	
     	public Ghost(int x, int y, boolean hasKey) {
@@ -108,7 +116,7 @@ public class MazePane extends GridPane{
     		this.y = y;	
     	}
 
-    	// 获取周围能走的方向(没有人的方向）
+    	/* Get all directions can move. */
         private ArrayList<Integer> checkDir() {
             ArrayList<Integer> dirList = new ArrayList<>();
             if (x + 1 < cols && (mazeCreator.maze[x + 1][y]).status == 1 && !(x + 1 == player.x && y == player.y)) {
@@ -126,7 +134,7 @@ public class MazePane extends GridPane{
             return dirList;
         }
     }
-    // 通过坐标获取该位置的鬼，该位置没有鬼则返回null
+    /* Get the ghost at the location by coordinates, return null if there is no ghost at the location. */
     public Ghost getGhost(int x, int y) {
         for (int i = 0; i < ghosts.length; i++) {
             if (x == ghosts[i].x && y == ghosts[i].y) {
@@ -139,10 +147,10 @@ public class MazePane extends GridPane{
 
 
     public class Player {
-        int x,y;	//保存坐标
+        int x,y;  // the position of the player
         private int characterType;
-        int[] itemList = {0, 0, 0, 2};	//拥有道具数目，itemList[0]钥匙 itemList[1]铲子 itemList[2]隐身衣 itemList[3]血值（初始为2）
-        boolean visible = true;		//使用隐身衣后，visible变为false, 将不会触发打鬼游戏
+        int[] itemList = {0, 0, 0, 2};	// the number of prop he has. [0]key, [1]shovel, [2]cloak, [3]blood(init 2)
+        boolean visible = true;  // whether the player is visible by the ghost.
 
         private Player(int x, int y, int characterType) {
             this.x = x;
@@ -150,35 +158,35 @@ public class MazePane extends GridPane{
             this.characterType = characterType;
             switch (characterType) {
                 case 0:  // warrior
-                    itemList[1] += 1;  // 多一把铲子
+                    itemList[1] += 1;  // An extra shovel
                     break;
                 case 1:  // priest
-                    itemList[2] += 1;  // 多一件隐身衣
+                    itemList[2] += 1;  // An extra invisibility cloak
                     break;
                 case 2:  // defender
-                    itemList[3] += 1;  // 多一滴血
+                    itemList[3] += 1;  // An extra blood
                     break;
             }
         }
 
-        // 如果走到道具处则itemlist相应+1并return代号
+        /* If go to the cell has prop, corresponding itemList +1 and return code. */
         public int getProp() {
-            if (mazeCreator.shovelList.contains(mazeCreator.maze[x][y])) {  // 铲子
+            if (mazeCreator.shovelList.contains(mazeCreator.maze[x][y])) {  // shovel
                 itemList[1] += 1;
                 mazeCreator.shovelList.remove(mazeCreator.maze[x][y]);
                 return 1;
-            } else if (mazeCreator.bloodBagList.contains(mazeCreator.maze[x][y])) {  // 血包,捡到直接加血
+            } else if (mazeCreator.bloodBagList.contains(mazeCreator.maze[x][y])) {  // blood bag
                 itemList[3] += 1;
                 mazeCreator.bloodBagList.remove(mazeCreator.maze[x][y]);
                 return 2;
-            } else if (mazeCreator.cloakList.contains(mazeCreator.maze[x][y])) {  // 隐身
+            } else if (mazeCreator.cloakList.contains(mazeCreator.maze[x][y])) {  // cloak
                 itemList[2] += 1;
                 mazeCreator.cloakList.remove(mazeCreator.maze[x][y]);
                 return 3;
-            } else if (mazeCreator.trapList.contains(mazeCreator.maze[x][y])) {
+            } else if (mazeCreator.trapList.contains(mazeCreator.maze[x][y])) {  // trap
                 mazeCreator.trapList.remove(mazeCreator.maze[x][y]);
                 return 4;
-            } else {
+            } else {  // none
                 return 0;
             }
         }
@@ -188,7 +196,7 @@ public class MazePane extends GridPane{
     private void initMazeLayouts(int blockType) {
         this.setVgap(2);
         this.setHgap(2);
-		//mazeCreator.generateMaze(); //我在实例化的时候调用了，不然没办法随机生成鬼的位置
+
         for (int j = 0; j < rows; j++) {
             for (int i = 0; i < cols; i++) {
             	System.out.print(mazeCreator.maze[i][j].status + " ");
@@ -202,11 +210,11 @@ public class MazePane extends GridPane{
         	this.mazeCreator.maze[ghosts[i].x][ghosts[i].y].setCenter(ghosts[i].ghostView);
         }
 
-        this.mazeCreator.maze[player.x][player.y].setCenter(characterIcon);
-        this.mazeCreator.maze[cols - 2][rows - 1].setCenter(doorView);
+        this.mazeCreator.maze[player.x][player.y].setCenter(characterIcon);  // set the init player's position (1,1)
+        this.mazeCreator.maze[cols - 2][rows - 1].setCenter(doorView);  // set the exit's position
     }
 
-    /* 根据不同的charactertype产生不同的icon */
+    /* Generate different icons according to different charactertypes. */
     private void initImg() {
         switch (player.characterType) {
             case 0:
