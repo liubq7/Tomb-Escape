@@ -1,7 +1,7 @@
 # Tomb Escape
 <!-- <p align="center"><img src ="images/graveyard.png" width = "500px"></p> -->
 
----
+<!-- --- -->
 Tomb Escape is a maze game written in JavaFX. The maze is generated randomly by Depth-First-Search algorithm. Player should get a key from a ghost with blood > 0 to escape from the tomb.  
 
 ## Run Configurations  
